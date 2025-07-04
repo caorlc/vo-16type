@@ -137,17 +137,44 @@ export default function HomePage() {
               <p className="text-sm text-gray-500">約10分で完了 • 完全無料</p>
             </div>
 
-            {/* Character Illustration */}
-            <div className="relative max-w-2xl mx-auto">
-              <Image
-                src="/images/mbti-characters.png"
-                alt="MBTI性格タイプのキャラクター"
-                width={600}
-                height={400}
-                className="rounded-2xl shadow-2xl"
-                priority
-              />
-            </div>
+            {/* Personality Types Grid - 上移到这里 */}
+            <section className="py-20 bg-gray-50">
+              <div className="container mx-auto px-4">
+                <div className="text-center mb-16">
+                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">16の性格タイプ</h2>
+                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                    あなたはどのタイプでしょうか？各タイプの特徴を見てみましょう
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                  {personalityTypes.map((type) => (
+                    <Link key={type.id} href={`/personality/${type.id.toLowerCase()}`}>
+                      <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
+                        <CardHeader className="pb-2 flex flex-col items-center">
+                          <div className="flex items-center justify-between">
+                            <Badge className={type.color}>{type.id}</Badge>
+                          </div>
+                          <CardTitle className="text-lg group-hover:text-orange-500 transition-colors">{type.name}</CardTitle>
+                          <CardDescription className="text-sm">{type.description}</CardDescription>
+                          <img
+                            src={"/images/entj.png"}
+                            alt={`${type.id}の代表画像`}
+                            width={48}
+                            height={48}
+                            className="mt-2 rounded-full object-cover"
+                          />
+                        </CardHeader>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+                <div className="text-center mt-12">
+                  <Button variant="outline" size="lg">
+                    <Link href="/types">すべてのタイプを詳しく見る</Link>
+                  </Button>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </section>
@@ -176,42 +203,6 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Personality Types Grid */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">16の性格タイプ</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              あなたはどのタイプでしょうか？各タイプの特徴を見てみましょう
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {personalityTypes.map((type) => (
-              <Link key={type.id} href={`/personality/${type.id.toLowerCase()}`}>
-                <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
-                      <Badge className={type.color}>{type.id}</Badge>
-                    </div>
-                    <CardTitle className="text-lg group-hover:text-orange-500 transition-colors">{type.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-sm">{type.description}</CardDescription>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Button variant="outline" size="lg">
-              <Link href="/types">すべてのタイプを詳しく見る</Link>
-            </Button>
           </div>
         </div>
       </section>

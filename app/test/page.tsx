@@ -182,7 +182,7 @@ export default function TestPage() {
                 onClick={() => handleAnswer("A")}
               >
                 <div className="flex items-start space-x-3">
-                  <span className="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mt-1">
+                  <span className="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
                     A
                   </span>
                   <span className="text-lg leading-relaxed">{currentQ.optionA}</span>
@@ -196,7 +196,7 @@ export default function TestPage() {
                 onClick={() => handleAnswer("B")}
               >
                 <div className="flex items-start space-x-3">
-                  <span className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mt-1">
+                  <span className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
                     B
                   </span>
                   <span className="text-lg leading-relaxed">{currentQ.optionB}</span>

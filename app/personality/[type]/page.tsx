@@ -342,6 +342,13 @@ export default function PersonalityPage() {
             >
               <span className="text-5xl font-bold text-white">{data.type}</span>
             </div>
+            <img
+              src="/images/16types/entj.png"
+              alt={`${data.type}の代表画像`}
+              width={160}
+              height={160}
+              className="mx-auto mb-6 rounded-full shadow-lg object-cover"
+            />
             <h1 className="text-5xl md:text-6xl font-bold mb-4">{data.name}</h1>
             <p className="text-2xl mb-6 opacity-90">{data.subtitle}</p>
             <Badge variant="secondary" className="text-lg px-4 py-2 bg-white/20 text-white border-white/30">
