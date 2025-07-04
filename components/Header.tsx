@@ -39,7 +39,7 @@ export default function Header() {
           </nav>
         </div>
         <Button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md shadow" size="sm">
-          <Link href="/test" className="text-white">診断を始める</Link>
+          <Link href="/test" className="text-white">もう一度診断する</Link>
         </Button>
       </div>
     </header>
