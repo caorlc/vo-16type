@@ -3,6 +3,8 @@ import { Badge } from "@/components/ui/badge"
 import { Brain, Users, Target, BookOpen } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 
 const mbtiDimensions = [
   {
@@ -54,27 +56,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">M</span>
-            </div>
-            <span className="text-xl font-bold text-gray-900">MBTI診断</span>
-          </div>
-          <nav className="hidden md:flex items-center space-x-6">
-            <Link href="/" className="text-gray-600 hover:text-gray-900">
-              ホーム
-            </Link>
-            <Link href="/types" className="text-gray-600 hover:text-gray-900">
-              16タイプ
-            </Link>
-            <Button variant="outline" size="sm">
-              <Link href="/test">診断を始める</Link>
-            </Button>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
@@ -256,6 +238,7 @@ export default function AboutPage() {
           </Card>
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

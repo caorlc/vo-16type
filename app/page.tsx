@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Users, Brain, Target, Star } from "lucide-react"
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import Footer from "@/components/Footer"
 
 const personalityTypes = [
   {
@@ -93,23 +95,25 @@ export default function HomePage() {
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">M</span>
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">M</span>
+              </div>
+              <span className="text-xl font-bold text-gray-900">MBTI診断</span>
             </div>
-            <span className="text-xl font-bold text-gray-900">MBTI診断</span>
+            <nav className="hidden md:flex items-center space-x-6 ml-6">
+              <Link href="/" className="text-gray-600 hover:text-gray-900">
+                ホーム
+              </Link>
+              <Link href="/types" className="text-gray-600 hover:text-gray-900">
+                16タイプ
+              </Link>
+            </nav>
           </div>
-          <nav className="hidden md:flex items-center space-x-6">
-            <Link href="/about" className="text-gray-600 hover:text-gray-900">
-              MBTIとは
-            </Link>
-            <Link href="/types" className="text-gray-600 hover:text-gray-900">
-              16タイプ
-            </Link>
-            <Button variant="outline" size="sm">
-              <Link href="/test">診断を始める</Link>
-            </Button>
-          </nav>
+          <Button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md shadow" size="sm">
+            <Link href="/test" className="text-white">診断を始める</Link>
+          </Button>
         </div>
       </header>
 
@@ -148,13 +152,32 @@ export default function HomePage() {
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                   {personalityTypes.map((type) => (
-                    <Link key={type.id} href={`/personality/${type.id.toLowerCase()}`}>
-                      <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
+                    type.id === "ENTP" ? (
+                      <Link key={type.id} href="/personality/entp">
+                        <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
+                          <CardHeader className="pb-2 flex flex-col items-center">
+                            <div className="flex items-center justify-between">
+                              <Badge className={type.color}>{type.id}</Badge>
+                            </div>
+                            <CardTitle className="text-lg group-hover:text-orange-500 transition-colors">{type.name}</CardTitle>
+                            <CardDescription className="text-sm">{type.description}</CardDescription>
+                            <img
+                              src={"/images/entj.png"}
+                              alt={`${type.id}の代表画像`}
+                              width={48}
+                              height={48}
+                              className="mt-2 rounded-full object-cover"
+                            />
+                          </CardHeader>
+                        </Card>
+                      </Link>
+                    ) : (
+                      <Card key={type.id}>
                         <CardHeader className="pb-2 flex flex-col items-center">
                           <div className="flex items-center justify-between">
                             <Badge className={type.color}>{type.id}</Badge>
                           </div>
-                          <CardTitle className="text-lg group-hover:text-orange-500 transition-colors">{type.name}</CardTitle>
+                          <CardTitle className="text-lg">{type.name}</CardTitle>
                           <CardDescription className="text-sm">{type.description}</CardDescription>
                           <img
                             src={"/images/entj.png"}
@@ -165,7 +188,7 @@ export default function HomePage() {
                           />
                         </CardHeader>
                       </Card>
-                    </Link>
+                    )
                   ))}
                 </div>
                 <div className="text-center mt-12">
@@ -207,6 +230,56 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">よくある質問</h2>
+            <p className="text-lg text-gray-600">MBTI診断について</p>
+          </div>
+          <div className="max-w-2xl mx-auto">
+            <Accordion type="single" collapsible className="w-full bg-white rounded-lg shadow-sm">
+              <AccordionItem value="q1">
+                <AccordionTrigger>MBTI診断とは何ですか？</AccordionTrigger>
+                <AccordionContent>
+                  MBTI診断は、心理学者カール・ユングの理論に基づき、16の性格タイプからあなたの個性を分析する性格診断テストです。
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="q2">
+                <AccordionTrigger>診断の精度はどの程度ですか？</AccordionTrigger>
+                <AccordionContent>
+                  科学的理論と多くの研究に基づいていますが、あくまで自己理解の一助としてご利用ください。
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="q3">
+                <AccordionTrigger>無料版と有料版の違いは何ですか？</AccordionTrigger>
+                <AccordionContent>
+                  無料版は基本的な診断結果を提供し、有料版ではより詳細な分析やアドバイスが得られます。
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="q4">
+                <AccordionTrigger>診断結果は変わることがありますか？</AccordionTrigger>
+                <AccordionContent>
+                  ライフステージや経験によって変化する場合があります。定期的な診断をおすすめします。
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="q5">
+                <AccordionTrigger>個人情報の取り扱いは安全ですか？</AccordionTrigger>
+                <AccordionContent>
+                  プライバシーを最優先し、個人情報は厳重に管理しています。
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="q6">
+                <AccordionTrigger>診断にはどのくらい時間がかかりますか？</AccordionTrigger>
+                <AccordionContent>
+                  通常10分程度で完了します。
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-orange-500">
         <div className="container mx-auto px-4 text-center">
@@ -230,68 +303,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">M</span>
-                </div>
-                <span className="text-xl font-bold">MBTI診断</span>
-              </div>
-              <p className="text-gray-400">科学的根拠に基づいた信頼性の高い性格診断サービス</p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">診断について</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link href="/about" className="hover:text-white">
-                    MBTIとは
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/types" className="hover:text-white">
-                    16タイプ
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/test" className="hover:text-white">
-                    診断を始める
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">サポート</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link href="/faq" className="hover:text-white">
-                    よくある質問
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-white">
-                    お問い合わせ
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/privacy" className="hover:text-white">
-                    プライバシーポリシー
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">フォローする</h3>
-              <p className="text-gray-400 mb-4">最新の性格診断情報をお届けします</p>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 MBTI診断. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
