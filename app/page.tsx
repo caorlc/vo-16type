@@ -6,88 +6,15 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Users, Brain, Target, Star } from "lucide-react"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import Footer from "@/components/Footer"
+// @ts-ignore
+import homepageContent from "../homepage-content.json"
 
-const personalityTypes = [
-  {
-    id: "INTJ",
-    name: "建築家",
-    description: "独創的で戦略的な思考を持つ完璧主義者",
-    color: "bg-purple-100 text-purple-800",
-  },
-  {
-    id: "INTP",
-    name: "論理学者",
-    description: "革新的な発明家で、知識への渇望が尽きない",
-    color: "bg-blue-100 text-blue-800",
-  },
-  { id: "ENTJ", name: "指揮官", description: "大胆で想像力豊かな強力なリーダー", color: "bg-red-100 text-red-800" },
-  { id: "ENTP", name: "討論者", description: "賢くて好奇心旺盛な思考家", color: "bg-orange-100 text-orange-800" },
-  {
-    id: "INFJ",
-    name: "提唱者",
-    description: "静かで神秘的だが、人々を鼓舞する理想主義者",
-    color: "bg-green-100 text-green-800",
-  },
-  { id: "INFP", name: "仲介者", description: "詩的で親切で利他的な人", color: "bg-teal-100 text-teal-800" },
-  {
-    id: "ENFJ",
-    name: "主人公",
-    description: "カリスマ性があり、人々を鼓舞するリーダー",
-    color: "bg-pink-100 text-pink-800",
-  },
-  { id: "ENFP", name: "運動家", description: "熱心で創造的で社交的な自由人", color: "bg-yellow-100 text-yellow-800" },
-  { id: "ISTJ", name: "管理者", description: "実用的で事実重視の信頼できる人", color: "bg-gray-100 text-gray-800" },
-  { id: "ISFJ", name: "擁護者", description: "非常に献身的で温かい保護者", color: "bg-indigo-100 text-indigo-800" },
-  {
-    id: "ESTJ",
-    name: "幹部",
-    description: "優秀な管理者で、物事や人々を管理することに長けている",
-    color: "bg-red-100 text-red-800",
-  },
-  {
-    id: "ESFJ",
-    name: "領事",
-    description: "非常に思いやりがあり、社交的で人気がある",
-    color: "bg-rose-100 text-rose-800",
-  },
-  { id: "ISTP", name: "巨匠", description: "大胆で実用的な実験者", color: "bg-amber-100 text-amber-800" },
-  { id: "ISFP", name: "冒険家", description: "柔軟で魅力的な芸術家", color: "bg-emerald-100 text-emerald-800" },
-  {
-    id: "ESTP",
-    name: "起業家",
-    description: "賢くてエネルギッシュで、非常に知覚的",
-    color: "bg-orange-100 text-orange-800",
-  },
-  {
-    id: "ESFP",
-    name: "エンターテイナー",
-    description: "自発的でエネルギッシュで熱心な人",
-    color: "bg-purple-100 text-purple-800",
-  },
-]
-
-const features = [
-  {
-    icon: Brain,
-    title: "科学的根拠",
-    description: "心理学者カール・ユングの理論に基づいた信頼性の高い性格診断",
-  },
-  {
-    icon: Users,
-    title: "16の性格タイプ",
-    description: "あなたの個性を詳細に分析し、最適な性格タイプを特定",
-  },
-  {
-    icon: Target,
-    title: "実用的なアドバイス",
-    description: "キャリア、人間関係、個人成長に役立つ具体的な提案",
-  },
-  {
-    icon: Star,
-    title: "詳細な分析",
-    description: "強みと弱み、適職、相性の良いタイプまで詳しく解説",
-  },
-]
+const featureIcons: Record<string, React.ElementType> = {
+  Brain,
+  Users,
+  Target,
+  Star,
+}
 
 export default function HomePage() {
   return (
@@ -97,84 +24,55 @@ export default function HomePage() {
         <div className="container mx-auto text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              あなたの
-              <span className="text-orange-500">本当の性格</span>
-              を発見しよう
+              {homepageContent.hero.title.replace(homepageContent.hero.highlight, "")}
+              <span className="text-orange-500">{homepageContent.hero.highlight}</span>
+              {homepageContent.hero.title.split(homepageContent.hero.highlight)[1] || ""}
             </h1>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              世界で最も信頼されているMBTI性格診断で、あなたの隠れた才能と可能性を見つけてください。
-              <br />
-              70の質問に答えるだけで、16の性格タイプからあなたにぴったりのタイプが分かります。
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed" style={{whiteSpace: 'pre-line'}}>
+              {homepageContent.hero.subtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-lg">
                 <Link href="/test" className="flex items-center">
-                  無料で診断を始める
+                  {homepageContent.hero.startButton}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <p className="text-sm text-gray-500">約10分で完了 • 完全無料</p>
+              <p className="text-sm text-gray-500">{homepageContent.hero.timeInfo}</p>
             </div>
-
-            {/* Personality Types Grid - 上移到这里 */}
+            {/* Personality Types Grid */}
             <section className="py-20 bg-gray-50">
               <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
-                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">16の性格タイプ</h2>
-                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                    あなたはどのタイプでしょうか？各タイプの特徴を見てみましょう
-                  </p>
+                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{homepageContent.typesSection.title}</h2>
+                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">{homepageContent.typesSection.subtitle}</p>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                  {personalityTypes.map((type) => (
-                    type.id === "ENTP" ? (
-                      <Link key={type.id} href={`/personality/${type.id.toLowerCase()}`}>
-                        <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
-                          <CardHeader className="pb-2 flex flex-col items-center">
-                            <div className="flex items-center justify-between">
-                              <Badge className={type.color}>{type.id}</Badge>
-                            </div>
-                            <CardTitle className="text-lg group-hover:text-orange-500 transition-colors">{type.name}</CardTitle>
-                            <CardDescription className="text-sm">{type.description}</CardDescription>
-                            <div className="h-20 w-full flex items-center justify-center">
-                              <img
-                                src={`/images/${type.id.toLowerCase()}.png`}
-                                alt={`${type.id}の代表画像`}
-                                width={72}
-                                height={72}
-                                className="bg-white p-2 rounded-full object-contain"
-                                style={{objectPosition: 'center'}}
-                              />
-                            </div>
-                          </CardHeader>
-                        </Card>
-                      </Link>
-                    ) : (
-                      <Card key={type.id}>
-                        <CardHeader className="pb-2 flex flex-col items-center">
-                          <div className="flex items-center justify-between">
-                            <Badge className={type.color}>{type.id}</Badge>
-                          </div>
-                          <CardTitle className="text-lg">{type.name}</CardTitle>
-                          <CardDescription className="text-sm">{type.description}</CardDescription>
-                          <div className="h-20 w-full flex items-center justify-center">
-                            <img
-                              src={`/images/${type.id.toLowerCase()}.png`}
-                              alt={`${type.id}の代表画像`}
-                              width={72}
-                              height={72}
-                              className="bg-white p-2 rounded-full object-contain"
-                              style={{objectPosition: 'center'}}
-                            />
-                          </div>
-                        </CardHeader>
-                      </Card>
-                    )
+                  {homepageContent.typesSection.types.map((type: any) => (
+                    <Card key={type.id}>
+                      <CardHeader className="pb-2 flex flex-col items-center">
+                        <div className="flex items-center justify-between">
+                          <Badge className={type.color}>{type.id}</Badge>
+                        </div>
+                        <CardTitle className="text-lg">{type.name}</CardTitle>
+                        <CardDescription className="text-sm">{type.description}</CardDescription>
+                        <div className="h-20 w-full flex items-center justify-center">
+                          <img
+                            src={`/images/${type.id.toLowerCase()}.png`}
+                            alt={`${type.id}の代表画像`}
+                            width={72}
+                            height={72}
+                            className="bg-white p-2 rounded-full object-contain"
+                            style={{objectPosition: 'center'}}
+                          />
+                        </div>
+                      </CardHeader>
+                    </Card>
                   ))}
                 </div>
                 <div className="text-center mt-12">
                   <Button variant="outline" size="lg">
-                    <Link href="/types">すべてのタイプを詳しく見る</Link>
+                    <Link href="/types">{homepageContent.typesSection.viewAllButton}</Link>
                   </Button>
                 </div>
               </div>
@@ -182,107 +80,70 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* Features Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">なぜMBTI診断が選ばれるのか</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              科学的根拠に基づいた信頼性の高い性格診断で、あなたの真の姿を発見してください
-            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{homepageContent.featuresSection.title}</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">{homepageContent.featuresSection.subtitle}</p>
           </div>
-
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <feature.icon className="h-8 w-8 text-orange-500" />
-                  </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-gray-600">{feature.description}</CardDescription>
-                </CardContent>
-              </Card>
-            ))}
+            {homepageContent.featuresSection.features.map((feature: any, index: number) => {
+              const Icon = featureIcons[feature.icon];
+              return (
+                <Card key={index} className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow">
+                  <CardHeader>
+                    <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      {Icon && <Icon className="h-8 w-8 text-orange-500" />}
+                    </div>
+                    <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-gray-600">{feature.description}</CardDescription>
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
         </div>
       </section>
-
       {/* FAQ Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">よくある質問</h2>
-            <p className="text-lg text-gray-600">MBTI診断について</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{homepageContent.faqSection.title}</h2>
           </div>
           <div className="max-w-2xl mx-auto">
             <Accordion type="single" collapsible className="w-full bg-white rounded-lg shadow-sm">
-              <AccordionItem value="q1">
-                <AccordionTrigger>MBTI診断とは何ですか？</AccordionTrigger>
-                <AccordionContent>
-                  MBTI診断は、心理学者カール・ユングの理論に基づき、16の性格タイプからあなたの個性を分析する性格診断テストです。
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="q2">
-                <AccordionTrigger>診断の精度はどの程度ですか？</AccordionTrigger>
-                <AccordionContent>
-                  科学的理論と多くの研究に基づいていますが、あくまで自己理解の一助としてご利用ください。
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="q3">
-                <AccordionTrigger>無料版と有料版の違いは何ですか？</AccordionTrigger>
-                <AccordionContent>
-                  無料版は基本的な診断結果を提供し、有料版ではより詳細な分析やアドバイスが得られます。
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="q4">
-                <AccordionTrigger>診断結果は変わることがありますか？</AccordionTrigger>
-                <AccordionContent>
-                  ライフステージや経験によって変化する場合があります。定期的な診断をおすすめします。
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="q5">
-                <AccordionTrigger>個人情報の取り扱いは安全ですか？</AccordionTrigger>
-                <AccordionContent>
-                  プライバシーを最優先し、個人情報は厳重に管理しています。
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="q6">
-                <AccordionTrigger>診断にはどのくらい時間がかかりますか？</AccordionTrigger>
-                <AccordionContent>
-                  通常10分程度で完了します。
-                </AccordionContent>
-              </AccordionItem>
+              {homepageContent.faqSection.faqs.map((faq: any, idx: number) => (
+                <AccordionItem value={`q${idx+1}`} key={idx}>
+                  <AccordionTrigger>{faq.question}</AccordionTrigger>
+                  <AccordionContent>{faq.answer}</AccordionContent>
+                </AccordionItem>
+              ))}
             </Accordion>
           </div>
         </div>
       </section>
-
       {/* CTA Section */}
       <section className="py-20 bg-orange-500">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">今すぐあなたの性格タイプを発見しよう</h2>
-            <p className="text-xl text-orange-100 mb-8">
-              数百万人が利用している信頼性の高いMBTI診断で、あなたの可能性を最大限に引き出してください
-            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{homepageContent.ctaSection.title}</h2>
+            <p className="text-xl text-orange-100 mb-8">{homepageContent.ctaSection.subtitle}</p>
             <Button
               size="lg"
               variant="secondary"
               className="bg-white text-orange-500 hover:bg-gray-100 px-8 py-4 text-lg"
             >
               <Link href="/test" className="flex items-center">
-                診断を始める（無料）
+                {homepageContent.ctaSection.button}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           </div>
         </div>
       </section>
-
       {/* Footer */}
       <Footer />
     </div>

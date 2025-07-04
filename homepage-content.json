@@ -1,0 +1,84 @@
+{
+  "hero": {
+    "title": "日本人ための16タイプ性格診断",
+    "highlight": "16タイプ性格診断",
+    "subtitle": "世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。 \n短短10分間で、16の性格タイプからあなたにぴったりのタイプが分かります。",
+    "startButton": "無料で診断を始める",
+    "timeInfo": "約10分で完了 • 完全無料"
+  },
+  "typesSection": {
+    "title": "16の性格タイプ",
+    "subtitle": "あなたはどのタイプでしょうか？各タイプの特徴を見てみましょう",
+    "viewAllButton": "すべてのタイプを詳しく見る",
+    "types": [
+      { "id": "INTJ", "name": "建築家", "description": "独創的で戦略的な思考を持つ完璧主義者", "color": "bg-purple-100 text-purple-800" },
+      { "id": "INTP", "name": "論理学者", "description": "革新的な発明家で、知識への渇望が尽きない", "color": "bg-blue-100 text-blue-800" },
+      { "id": "ENTJ", "name": "指揮官", "description": "大胆で想像力豊かな強力なリーダー", "color": "bg-red-100 text-red-800" },
+      { "id": "ENTP", "name": "討論者", "description": "賢くて好奇心旺盛な思考家", "color": "bg-orange-100 text-orange-800" },
+      { "id": "INFJ", "name": "提唱者", "description": "静かで神秘的だが、人々を鼓舞する理想主義者", "color": "bg-green-100 text-green-800" },
+      { "id": "INFP", "name": "仲介者", "description": "詩的で親切で利他的な人", "color": "bg-teal-100 text-teal-800" },
+      { "id": "ENFJ", "name": "主人公", "description": "カリスマ性があり、人々を鼓舞するリーダー", "color": "bg-pink-100 text-pink-800" },
+      { "id": "ENFP", "name": "運動家", "description": "熱心で創造的で社交的な自由人", "color": "bg-yellow-100 text-yellow-800" },
+      { "id": "ISTJ", "name": "管理者", "description": "実用的で事実重視の信頼できる人", "color": "bg-gray-100 text-gray-800" },
+      { "id": "ISFJ", "name": "擁護者", "description": "非常に献身的で温かい保護者", "color": "bg-indigo-100 text-indigo-800" },
+      { "id": "ESTJ", "name": "幹部", "description": "優秀な管理者で、物事や人々を管理することに長けている", "color": "bg-red-100 text-red-800" },
+      { "id": "ESFJ", "name": "領事", "description": "非常に思いやりがあり、社交的で人気がある", "color": "bg-rose-100 text-rose-800" },
+      { "id": "ISTP", "name": "巨匠", "description": "大胆で実用的な実験者", "color": "bg-amber-100 text-amber-800" },
+      { "id": "ISFP", "name": "冒険家", "description": "柔軟で魅力的な芸術家", "color": "bg-emerald-100 text-emerald-800" },
+      { "id": "ESTP", "name": "起業家", "description": "賢くてエネルギッシュで、非常に知覚的", "color": "bg-orange-100 text-orange-800" },
+      { "id": "ESFP", "name": "エンターテイナー", "description": "自発的でエネルギッシュで熱心な人", "color": "bg-purple-100 text-purple-800" }
+    ]
+  },
+  "featuresSection": {
+    "title": "なぜ16タイプ性格診断が選ばれるのか",
+    "subtitle": "科学的根拠に基づいた信頼性の高い性格診断で、あなたの真の姿を発見してください",
+    "features": [
+      { "title": "科学的根拠", "description": "心理学者カール・ユングの理論に基づいた信頼性の高い性格診断", "icon": "Brain" },
+      { "title": "16の性格タイプ", "description": "あなたの個性を詳細に分析し、最適な性格タイプを特定", "icon": "Users" },
+      { "title": "実用的なアドバイス", "description": "キャリア、人間関係、個人成長に役立つ具体的な提案", "icon": "Target" },
+      { "title": "詳細な分析", "description": "強みと弱み、適職、相性の良いタイプまで詳しく解説", "icon": "Star" }
+    ]
+  },
+  "faqSection": {
+    "title": "16タイプ性格診断についてよくある質問",
+    "faqs": [
+      {
+        "question": "MBTI診断とは何ですか？",
+        "answer": "MBTI（Myers-Briggs Type Indicator）は、心理学者カール・ユングの心理学的類型論を基に開発された性格診断ツールです。16の性格タイプに分類し、あなたの思考パターン、価値観、行動傾向を明らかにします。世界中で最も信頼され、多くの企業や教育機関で活用されています。"
+      },
+      {
+        "question": "診断は何問ありますか？時間はどのくらいかかりますか？",
+        "answer": "当サイトの診断は70問の質問で構成されており、通常10分程度で完了します。各質問は簡単で分かりやすく設計されているため、気軽にお答えいただけます。"
+      },
+      {
+        "question": "16の性格タイプにはどのような種類がありますか？",
+        "answer": "MBTIでは16の性格タイプがあります：INTJ（建築家）、INTP（論理学者）、ENTJ（指揮官）、ENTP（討論者）、INFJ（提唱者）、INFP（仲介者）、ENFJ（主人公）、ENFP（運動家）、ISTJ（管理者）、ISFJ（擁護者）、ESTJ（幹部）、ESFJ（領事）、ISTP（巨匠）、ISFP（冒険家）、ESTP（起業家）、ESFP（エンターテイナー）です。"
+      },
+      {
+        "question": "診断結果は変わることがありますか？",
+        "answer": "はい、ライフステージや経験、環境の変化によって診断結果が変わることがあります。これは正常なことで、人は成長し続けるものです。半年から1年に一度の診断をおすすめします。"
+      },
+      {
+        "question": "質問の意味が分からない場合はどうすればいいですか？",
+        "answer": "各質問には分かりやすい説明を付けており、日常的な状況を想定した簡単な表現を使用しています。迷った場合は、直感的に最初に思った選択肢を選んでください。"
+      },
+      {
+        "question": "個人情報の取り扱いは安全ですか？",
+        "answer": "お客様のプライバシーを最優先に考え、個人情報は厳重に管理しています。診断結果や個人データは暗号化され、第三者に提供されることはありません。"
+      },
+      {
+        "question": "診断結果をどのように活用すればいいですか？",
+        "answer": "診断結果は自己理解を深め、キャリア選択、人間関係の改善、コミュニケーションスタイルの理解に活用できます。また、チームワークの向上や適職探しの参考としても有効です。"
+      },
+      {
+        "question": "スマートフォンでも診断できますか？",
+        "answer": "はい、当サイトはスマートフォン、タブレット、PCのすべてのデバイスに対応しています。いつでもどこでも気軽に診断を受けることができます。"
+      }
+    ]
+  },
+  "ctaSection": {
+    "title": "今すぐあなたの性格タイプを発見しよう",
+    "subtitle": "信頼性の高い16タイプ性格診断で、あなたの可能性を最大限に引き出してください",
+    "button": "診断を始める（無料）"
+  }
+} 

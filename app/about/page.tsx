@@ -58,10 +58,10 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">MBTIとは？</h1>
-            <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
-              MBTI（Myers-Briggs Type Indicator）は、心理学者カール・ユングの理論に基づいて開発された、
-              世界で最も広く使用されている性格診断ツールです。
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">16タイプ性格診断とは？</h1>
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              世界で最も信頼されているMBTI性格を診断で、あなたの隠れた才能と可能性を見つけてください。
+              <br />
             </p>
           </div>
 
@@ -75,7 +75,7 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <p className="text-gray-700 leading-relaxed">
-                MBTIは、スイスの心理学者カール・グスタフ・ユングの心理学的類型論を基礎として、
+                16タイプ性格診断は、スイスの心理学者カール・グスタフ・ユングの心理学的類型論を基礎として、
                 キャサリン・クック・ブリッグスとその娘イザベル・ブリッグス・マイヤーズによって開発されました。
               </p>
               <p className="text-gray-700 leading-relaxed">
@@ -140,8 +140,8 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <p className="text-gray-700 leading-relaxed">
-                MBTIは70年以上にわたって研究・改良され続けており、世界中で年間200万人以上が受検しています。 Fortune
-                100企業の89%がMBTIを人材開発に活用しており、その有効性が実証されています。
+                16タイプ性格診断は70年以上にわたって研究・改良され続けており、世界中で多くの人々からが受検しています。 Fortune
+                100企業の89%が16タイプ性格診断を人材開発に活用しており、その有効性が実証されています。
               </p>
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="text-center p-6 bg-blue-50 rounded-lg">

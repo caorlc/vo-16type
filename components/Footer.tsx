@@ -14,19 +14,16 @@ export default function Footer() {
               </div>
               <span className="text-xl font-bold">16Type</span>
             </Link>
-            <p className="text-gray-400">科学的根拠に基づいた信頼性の高い性格診断サービス</p>
+            <p className="text-gray-400">科学的根拠に基づいた信頼性の高い性格診断サービスです</p>
           </div>
           <div>
             <h3 className="font-semibold mb-4">診断について</h3>
             <ul className="space-y-2 text-gray-400">
               <li>
-                <Link href="/about" className="hover:text-white">MBTIとは</Link>
+                <Link href="/about" className="hover:text-white">16タイプ性格診断とは</Link>
               </li>
               <li>
-                <Link href="/types" className="hover:text-white">16タイプ</Link>
-              </li>
-              <li>
-                <Link href="/test" className="hover:text-white">診断を始める</Link>
+                <Link href="/types" className="hover:text-white">16タイプについて</Link>
               </li>
             </ul>
           </div>
@@ -43,10 +40,6 @@ export default function Footer() {
                 <Link href="/privacy" className="hover:text-white">プライバシーポリシー</Link>
               </li>
             </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-4">フォローする</h3>
-            <p className="text-gray-400 mb-4">最新の性格診断情報をお届けします</p>
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">

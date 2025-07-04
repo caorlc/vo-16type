@@ -99,7 +99,7 @@ export default function TestPage() {
   }
 
   const handleSubmit = () => {
-    // Calculate MBTI type based on answers
+    // Calculate 16タイプ性格診断 type based on answers
     const scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 }
 
     Object.entries(answers).forEach(([questionId, answer]) => {
@@ -122,7 +122,7 @@ export default function TestPage() {
 
     // Store result in localStorage for demo
     localStorage.setItem(
-      `mbti_result_${sessionId}`,
+      `16type_result_${sessionId}`,
       JSON.stringify({
         type: mbtiType,
         scores,
