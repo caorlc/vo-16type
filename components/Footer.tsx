@@ -8,12 +8,12 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center space-x-2 mb-4">
+            <Link href="/" className="flex items-center space-x-2 mb-4">
               <div className="w-8 h-8 flex items-center justify-center">
                 <img src="/logo.svg" alt="logo" className="w-8 h-8" />
               </div>
-              <span className="text-xl font-bold">MBTI診断</span>
-            </div>
+              <span className="text-xl font-bold">16Type</span>
+            </Link>
             <p className="text-gray-400">科学的根拠に基づいた信頼性の高い性格診断サービス</p>
           </div>
           <div>
@@ -34,7 +34,7 @@ export default function Footer() {
             <h3 className="font-semibold mb-4">サポート</h3>
             <ul className="space-y-2 text-gray-400">
               <li>
-                <Link href="/faq" className="hover:text-white">よくある質問</Link>
+                <Link href="/terms" className="hover:text-white">利用規約</Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-white">お問い合わせ</Link>
@@ -50,7 +50,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 MBTI診断. All rights reserved.</p>
+          <p>&copy; 2024 16Type. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -128,7 +128,7 @@ export default function HomePage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                   {personalityTypes.map((type) => (
                     type.id === "ENTP" ? (
-                      <Link key={type.id} href="/personality/entp">
+                      <Link key={type.id} href={`/personality/${type.id.toLowerCase()}`}>
                         <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
                           <CardHeader className="pb-2 flex flex-col items-center">
                             <div className="flex items-center justify-between">
@@ -136,13 +136,16 @@ export default function HomePage() {
                             </div>
                             <CardTitle className="text-lg group-hover:text-orange-500 transition-colors">{type.name}</CardTitle>
                             <CardDescription className="text-sm">{type.description}</CardDescription>
-                            <img
-                              src={"/images/entj.png"}
-                              alt={`${type.id}の代表画像`}
-                              width={48}
-                              height={48}
-                              className="mt-2 rounded-full object-cover"
-                            />
+                            <div className="h-20 w-full flex items-center justify-center">
+                              <img
+                                src={`/images/${type.id.toLowerCase()}.png`}
+                                alt={`${type.id}の代表画像`}
+                                width={72}
+                                height={72}
+                                className="bg-white p-2 rounded-full object-contain"
+                                style={{objectPosition: 'center'}}
+                              />
+                            </div>
                           </CardHeader>
                         </Card>
                       </Link>
@@ -154,13 +157,16 @@ export default function HomePage() {
                           </div>
                           <CardTitle className="text-lg">{type.name}</CardTitle>
                           <CardDescription className="text-sm">{type.description}</CardDescription>
-                          <img
-                            src={"/images/entj.png"}
-                            alt={`${type.id}の代表画像`}
-                            width={48}
-                            height={48}
-                            className="mt-2 rounded-full object-cover"
-                          />
+                          <div className="h-20 w-full flex items-center justify-center">
+                            <img
+                              src={`/images/${type.id.toLowerCase()}.png`}
+                              alt={`${type.id}の代表画像`}
+                              width={72}
+                              height={72}
+                              className="bg-white p-2 rounded-full object-contain"
+                              style={{objectPosition: 'center'}}
+                            />
+                          </div>
                         </CardHeader>
                       </Card>
                     )

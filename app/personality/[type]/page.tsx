@@ -21,7 +21,6 @@ import {
   BookOpen,
   Award,
 } from "lucide-react"
-import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 
 const personalityData = {
@@ -312,9 +311,6 @@ export default function PersonalityPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
-      {/* Header */}
-      <Header />
-
       {/* Hero Section */}
       <section className={`py-20 bg-gradient-to-r ${data.bgGradient} text-white`}>
         <div className="container mx-auto px-4">

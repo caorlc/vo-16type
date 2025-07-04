@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge"
 import { Brain, Users, Target, BookOpen } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 
 const mbtiDimensions = [
@@ -55,9 +54,6 @@ const personalityTypes = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
-      {/* Header */}
-      <Header />
-
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
