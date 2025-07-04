@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import Link from "next/link";
+import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: 'v0 App',
@@ -16,11 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <header>
-          <Link href="/">
-            <img src="/placeholder-logo.png" alt="Logo" style={{ cursor: "pointer" }} />
-          </Link>
-        </header>
+        <Header />
         {children}
       </body>
     </html>
