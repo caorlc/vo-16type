@@ -113,202 +113,172 @@ export default function ResultPage() {
 
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
-          {/* Result Header */}
+          {/* 答案明示 */}
           <Card className="mb-8 border-0 shadow-xl">
             <CardHeader className="text-center pb-8">
               <div className={`w-24 h-24 ${typeInfo.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
                 <span className="text-3xl font-bold text-white">{result.type}</span>
               </div>
-              <CardTitle className="text-4xl md:text-5xl text-gray-900 mb-4">{typeInfo.name}</CardTitle>
+              <CardTitle className="text-4xl md:text-5xl text-gray-900 mb-4">あなたの性格タイプ: <b>{typeInfo.name}</b></CardTitle>
               <CardDescription className="text-xl text-gray-600 max-w-2xl mx-auto">
-                {typeInfo.description}
+                {/* 概述1（免费） */}
+                {typeInfo.description} これは概述1（示例）
               </CardDescription>
             </CardHeader>
-          </Card>
-
-          {/* Dimension Scores */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Star className="w-5 h-5 mr-2 text-orange-500" />
-                あなたの性格傾向
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {dimensions.map((dim, index) => {
-                const total = Object.values(dim)
-                  .slice(1)
-                  .reduce((a: number, b: number) => a + b, 0)
-                const firstValue = Object.values(dim)[1] as number
-                const percentage = total > 0 ? (firstValue / total) * 100 : 50
-
-                return (
-                  <div key={index}>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">{dim.name}</span>
-                      <span className="text-sm text-gray-600">
-                        {Math.round(percentage)}% - {Math.round(100 - percentage)}%
-                      </span>
-                    </div>
-                    <Progress value={percentage} className="h-3" />
-                  </div>
-                )
-              })}
+            {/* 一张图 */}
+            <CardContent className="flex justify-center mb-4">
+              <img src={`/images/${result.type.toLowerCase()}.png`} alt={typeInfo.name} className="w-48 h-48 object-contain" />
+            </CardContent>
+            <CardContent className="text-center">
+              {/* 概述2（免费） */}
+              <p className="text-lg text-gray-700">これは概述2（示例）</p>
             </CardContent>
           </Card>
 
-          {/* Free Content */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <Card>
+          {/* General Traits模块 */}
+          <section className="mb-8">
+            <Card className="mb-4">
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Users className="w-5 h-5 mr-2 text-blue-500" />
-                  主な特徴
-                </CardTitle>
+                <CardTitle>General Traits</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  {typeInfo.traits.map((trait, index) => (
-                    <Badge key={index} variant="secondary" className="mr-2 mb-2">
-                      {trait}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Briefcase className="w-5 h-5 mr-2 text-green-500" />
-                  適職
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {typeInfo.careers.map((career, index) => (
-                    <li key={index} className="flex items-center">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3" />
-                      {career}
-                    </li>
+                <p className="mb-2">General Traits 概述（免费）</p>
+                <ul className="list-disc pl-5">
+                  {typeInfo.traits.map((trait, idx) => (
+                    <li key={idx}>{trait}</li>
                   ))}
                 </ul>
               </CardContent>
             </Card>
-          </div>
+          </section>
 
-          {/* Premium Content (Locked) */}
-          <div className="space-y-6">
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">さらに詳しい分析を見る</h3>
-              <p className="text-gray-600">
-                プレミアム版では、より詳細な性格分析と実用的なアドバイスをご覧いただけます
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Locked Content Cards */}
-              <Card className="relative overflow-hidden">
-                <div className="absolute inset-0 bg-gray-100/80 backdrop-blur-sm z-10 flex items-center justify-center">
-                  <div className="text-center">
-                    <Lock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <Button
-                      className="bg-orange-500 hover:bg-orange-600"
-                      onClick={() => router.push(`/checkout/${sessionId}`)}
-                    >
-                      解除する（¥980）
-                    </Button>
-                  </div>
+          {/* 你的人际关系模块 */}
+          <section className="mb-8">
+            <Card className="mb-4">
+              <CardHeader>
+                <CardTitle>你的人际关系</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-2">人际关系概述（免费）</p>
+                <div className="mb-2">
+                  <h4 className="font-semibold">人际关系强项</h4>
+                  <p>强项一段话（免费）</p>
                 </div>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Star className="w-5 h-5 mr-2 text-yellow-500" />
-                    強みと弱み
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold text-green-600 mb-2">強み</h4>
-                      <ul className="space-y-1">
-                        {typeInfo.strengths.map((strength, index) => (
-                          <li key={index} className="text-sm text-gray-600">
-                            • {strength}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-red-600 mb-2">改善点</h4>
-                      <ul className="space-y-1">
-                        {typeInfo.weaknesses.map((weakness, index) => (
-                          <li key={index} className="text-sm text-gray-600">
-                            • {weakness}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="relative overflow-hidden">
-                <div className="absolute inset-0 bg-gray-100/80 backdrop-blur-sm z-10 flex items-center justify-center">
-                  <div className="text-center">
-                    <Lock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <Button
-                      className="bg-orange-500 hover:bg-orange-600"
-                      onClick={() => router.push(`/checkout/${sessionId}`)}
-                    >
-                      解除する（¥980）
-                    </Button>
-                  </div>
+                <div>
+                  <h4 className="font-semibold">人际关系弱项</h4>
+                  <p>弱项一段话（免费）</p>
                 </div>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Heart className="w-5 h-5 mr-2 text-pink-500" />
-                    人間関係のアドバイス
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold mb-2">恋愛関係</h4>
-                      <p className="text-sm text-gray-600">あなたのタイプに最適なパートナーシップの築き方...</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-2">友人関係</h4>
-                      <p className="text-sm text-gray-600">長続きする友情を育むためのコツ...</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-2">職場での関係</h4>
-                      <p className="text-sm text-gray-600">同僚や上司との効果的なコミュニケーション方法...</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Premium CTA */}
-            <Card className="bg-gradient-to-r from-orange-500 to-pink-500 text-white border-0">
-              <CardContent className="text-center py-12">
-                <h3 className="text-3xl font-bold mb-4">完全版を今すぐ解除</h3>
-                <p className="text-xl mb-6 opacity-90">詳細な分析、キャリアアドバイス、人間関係の指導まで</p>
-                <div className="flex items-center justify-center space-x-4 mb-6">
-                  <span className="text-2xl font-bold">¥980</span>
-                  <span className="text-lg opacity-75">（一回限り）</span>
-                </div>
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  className="bg-white text-orange-500 hover:bg-gray-100 px-8 py-4 text-lg"
-                  onClick={() => router.push(`/checkout/${sessionId}`)}
-                >
-                  今すぐ解除する
-                </Button>
               </CardContent>
             </Card>
-          </div>
+          </section>
+
+          {/* What does Success mean to an ENFJ? 模块 */}
+          <section className="mb-8">
+            <Card className="mb-4">
+              <CardHeader>
+                <CardTitle>What does Success mean to an {result.type}?</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>Success模块概述（免费）</p>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Allowing Your ENFJ Strengths to Flourish 模块 */}
+          <section className="mb-8">
+            <Card className="mb-4">
+              <CardHeader>
+                <CardTitle>Allowing Your {result.type} Strengths to Flourish</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>Strengths to Flourish 概述（免费）</p>
+                <div className="relative mt-4">
+                  <div className="font-semibold mb-2">Making others feel valued and important</div>
+                  <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-md" style={{minHeight:'100%', minWidth:'100%'}}>
+                    <Lock className="w-10 h-10 text-orange-500 mb-3" />
+                    <div className="text-lg font-bold text-gray-800 mb-1">今すぐロックを解除</div>
+                    <div className="text-sm text-gray-500 mb-5 text-center">フルレポートを取得して、あなたの個性に合った10のアドバイスをアンロックしましょう。</div>
+                    <Button className="bg-orange-500 hover:bg-orange-600 text-white px-7 py-2 rounded-full font-semibold shadow min-w-[220px]" onClick={() => router.push(`/checkout/${sessionId}`)}>
+                      すべての結果のロックを解除
+                    </Button>
+                  </div>
+                  <div className="blur-sm select-none pointer-events-none">这里是付费内容的占位符，实际内容更丰富更长更有料</div>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Potential Problem Areas 模块 */}
+          <section className="mb-8">
+            <Card className="mb-4">
+              <CardHeader>
+                <CardTitle>Potential Problem Areas</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>问题描述（免费）</p>
+                <div className="relative mt-4">
+                  <div className="font-semibold mb-2">Explanation of Problems</div>
+                  <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-md" style={{minHeight:'100%', minWidth:'100%'}}>
+                    <Lock className="w-10 h-10 text-orange-500 mb-3" />
+                    <div className="text-lg font-bold text-gray-800 mb-1">今すぐロックを解除</div>
+                    <div className="text-sm text-gray-500 mb-5 text-center">フルレポートを取得して、あなたの個性に合った6つの課題解説をアンロックしましょう。</div>
+                    <Button className="bg-orange-500 hover:bg-orange-600 text-white px-7 py-2 rounded-full font-semibold shadow min-w-[220px]" onClick={() => router.push(`/checkout/${sessionId}`)}>
+                      すべての結果のロックを解除
+                    </Button>
+                  </div>
+                  <div className="blur-sm select-none pointer-events-none">这里是Explanation付费内容的占位符，实际内容更丰富更长更有料</div>
+                </div>
+                <div className="relative mt-4">
+                  <div className="font-semibold mb-2">Solutions</div>
+                  <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-md" style={{minHeight:'100%', minWidth:'100%'}}>
+                    <Lock className="w-10 h-10 text-orange-500 mb-3" />
+                    <div className="text-lg font-bold text-gray-800 mb-1">今すぐロックを解除</div>
+                    <div className="text-sm text-gray-500 mb-5 text-center">フルレポートを取得して、あなたの個性に合った6つの解決策をアンロックしましょう。</div>
+                    <Button className="bg-orange-500 hover:bg-orange-600 text-white px-7 py-2 rounded-full font-semibold shadow min-w-[220px]" onClick={() => router.push(`/checkout/${sessionId}`)}>
+                      すべての結果のロックを解除
+                    </Button>
+                  </div>
+                  <div className="blur-sm select-none pointer-events-none">这里是Solutions付费内容的占位符，实际内容更丰富更长更有料</div>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Ten Rules to Live By to Achieve ENFJ/ENTJ Success 模块 */}
+          <section className="mb-8">
+            <Card className="mb-4 relative overflow-hidden">
+              <CardHeader>
+                <CardTitle>Ten Rules to Live By to Achieve {result.type} Success</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-md" style={{minHeight:'100%', minWidth:'100%'}}>
+                  <Lock className="w-10 h-10 text-orange-500 mb-3" />
+                  <div className="text-lg font-bold text-gray-800 mb-1">今すぐロックを解除</div>
+                  <div className="text-sm text-gray-500 mb-5 text-center">フルレポートを取得して、あなたの個性に合った10の黄金法則をアンロックしましょう。</div>
+                  <Button className="bg-orange-500 hover:bg-orange-600 text-white px-7 py-2 rounded-full font-semibold shadow min-w-[220px]" onClick={() => router.push(`/checkout/${sessionId}`)}>
+                    すべての結果のロックを解除
+                  </Button>
+                </div>
+                <div className="blur-sm select-none pointer-events-none">这里是Ten Rules付费内容的占位符，实际内容更丰富更长更有料</div>
+              </CardContent>
+            </Card>
+            <Card className="mb-4 relative overflow-hidden">
+              <CardHeader>
+                <CardTitle>Ten Rules to Live By to Achieve ENTJ Success</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-md" style={{minHeight:'100%', minWidth:'100%'}}>
+                  <Lock className="w-10 h-10 text-orange-500 mb-3" />
+                  <div className="text-lg font-bold text-gray-800 mb-1">今すぐロックを解除</div>
+                  <div className="text-sm text-gray-500 mb-5 text-center">フルレポートを取得して、あなたの個性に合った10の黄金法則をアンロックしましょう。</div>
+                  <Button className="bg-orange-500 hover:bg-orange-600 text-white px-7 py-2 rounded-full font-semibold shadow min-w-[220px]" onClick={() => router.push(`/checkout/${sessionId}`)}>
+                    すべての結果のロックを解除
+                  </Button>
+                </div>
+                <div className="blur-sm select-none pointer-events-none">这里是Ten Rules付费内容的占位符，实际内容更丰富更长更有料</div>
+              </CardContent>
+            </Card>
+          </section>
         </div>
       </div>
     </div>
