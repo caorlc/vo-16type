@@ -12,12 +12,12 @@ interface PremiumMaskProps {
 
 export default function PremiumMask({ children, title, desc, buttonText, onUnlockClick }: PremiumMaskProps) {
   return (
-    <div className="relative">
+    <div className="relative w-full h-full">
       {/* 模糊内容 */}
       <div className="filter blur-sm pointer-events-none select-none" aria-hidden>
         {children}
       </div>
-      {/* 遮罩弹窗 */}
+      {/* 遮罩弹窗 - absolute 定位，只覆盖内容区 */}
       <div className="absolute inset-0 flex items-center justify-center z-10">
         <div className="bg-white rounded-xl shadow-xl p-8 flex flex-col items-center max-w-md w-full border">
           <Lock className="w-10 h-10 text-orange-500 mb-2" />

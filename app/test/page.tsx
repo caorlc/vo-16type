@@ -6,66 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useRouter } from "next/navigation"
-
-const questions = [
-  {
-    id: 1,
-    question: "パーティーで新しい人に会うとき、あなたは：",
-    optionA: "積極的に話しかけて新しい友達を作る",
-    optionB: "知っている人の近くにいて、紹介されるのを待つ",
-    dimension: "EI",
-  },
-  {
-    id: 2,
-    question: "問題を解決するとき、あなたは：",
-    optionA: "具体的な事実とデータに基づいて判断する",
-    optionB: "直感と可能性を重視して判断する",
-    dimension: "SN",
-  },
-  {
-    id: 3,
-    question: "決断を下すとき、あなたは：",
-    optionA: "論理的な分析を重視する",
-    optionB: "人への影響や感情を重視する",
-    dimension: "TF",
-  },
-  {
-    id: 4,
-    question: "計画を立てるとき、あなたは：",
-    optionA: "詳細なスケジュールを作って従う",
-    optionB: "柔軟性を保ち、状況に応じて調整する",
-    dimension: "JP",
-  },
-  {
-    id: 5,
-    question: "週末の過ごし方として好むのは：",
-    optionA: "友人たちと外出して活動的に過ごす",
-    optionB: "家で静かに読書や趣味を楽しむ",
-    dimension: "EI",
-  },
-  // Add more questions here - for demo purposes, I'll add a few more
-  {
-    id: 6,
-    question: "新しいプロジェクトを始めるとき：",
-    optionA: "まず全体の概要と可能性を考える",
-    optionB: "具体的な手順と詳細から始める",
-    dimension: "SN",
-  },
-  {
-    id: 7,
-    question: "チームで作業するとき：",
-    optionA: "効率性と結果を最優先する",
-    optionB: "チームの調和と全員の意見を重視する",
-    dimension: "TF",
-  },
-  {
-    id: 8,
-    question: "旅行の計画を立てるとき：",
-    optionA: "事前に詳細な行程を決めておく",
-    optionB: "大まかな方向性だけ決めて現地で決める",
-    dimension: "JP",
-  },
-]
+import { questions, calcMBTI } from "@/lib/questions-ja"
 
 export default function TestPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -99,37 +40,36 @@ export default function TestPage() {
   }
 
   const handleSubmit = () => {
-    // Calculate 16タイプ性格診断 type based on answers
-    const scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 }
-
-    Object.entries(answers).forEach(([questionId, answer]) => {
-      const question = questions.find((q) => q.id === Number.parseInt(questionId))
-      if (question) {
-        const dimension = question.dimension
-        if (answer === "A") {
-          scores[dimension[0] as keyof typeof scores]++
-        } else {
-          scores[dimension[1] as keyof typeof scores]++
-        }
-      }
-    })
-
-    const mbtiType =
-      (scores.E > scores.I ? "E" : "I") +
-      (scores.S > scores.N ? "S" : "N") +
-      (scores.T > scores.F ? "T" : "F") +
-      (scores.J > scores.P ? "J" : "P")
+    // Calculate 16タイプ性格診断 type based on answers using calcMBTI function
+    const result = calcMBTI(answers)
 
     // Store result in localStorage for demo
     localStorage.setItem(
       `16type_result_${sessionId}`,
       JSON.stringify({
-        type: mbtiType,
-        scores,
+        type: result.type,
+        detail: result.detail,
         timestamp: new Date().toISOString(),
       }),
     )
 
+    router.push(`/result/${sessionId}`)
+  }
+
+  const handleSkip = () => {
+    const randomAnswers: Record<number, "A" | "B"> = {}
+    for (let i = 1; i <= 70; i++) {
+      randomAnswers[i] = Math.random() > 0.5 ? "A" : "B"
+    }
+    const result = calcMBTI(randomAnswers)
+    localStorage.setItem(
+      `16type_result_${sessionId}`,
+      JSON.stringify({
+        type: result.type,
+        detail: result.detail,
+        timestamp: new Date().toISOString(),
+      }),
+    )
     router.push(`/result/${sessionId}`)
   }
 
@@ -139,28 +79,14 @@ export default function TestPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
-      {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">M</span>
-              </div>
-              <span className="text-xl font-bold text-gray-900">MBTI診断</span>
-            </div>
-            <div className="text-sm text-gray-600">
-              質問 {currentQuestion + 1} / {questions.length}
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Progress Bar */}
-      <div className="bg-white border-b">
+      {/* Progress Bar + Question Number */}
+      <div className="bg-white border-b sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <Progress value={progress} className="w-full" />
-          <p className="text-sm text-gray-600 mt-2 text-center">進捗: {Math.round(progress)}%</p>
+          <div className="flex justify-between items-center mt-2">
+            <p className="text-sm text-gray-600">進捗: {Math.round(progress)}%</p>
+            <p className="text-sm text-gray-600">質問 {currentQuestion + 1} / {questions.length}</p>
+          </div>
         </div>
       </div>
 
@@ -172,7 +98,7 @@ export default function TestPage() {
               <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-orange-500">{currentQuestion + 1}</span>
               </div>
-              <CardTitle className="text-2xl md:text-3xl text-gray-900 leading-relaxed">{currentQ.question}</CardTitle>
+              <CardTitle className="text-2xl md:text-3xl text-gray-900 leading-relaxed">{currentQ.text}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <Button
@@ -185,7 +111,7 @@ export default function TestPage() {
                   <span className="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
                     A
                   </span>
-                  <span className="text-lg leading-relaxed">{currentQ.optionA}</span>
+                  <span className="text-lg leading-relaxed">{currentQ.a}</span>
                 </div>
               </Button>
 
@@ -199,7 +125,7 @@ export default function TestPage() {
                   <span className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
                     B
                   </span>
-                  <span className="text-lg leading-relaxed">{currentQ.optionB}</span>
+                  <span className="text-lg leading-relaxed">{currentQ.b}</span>
                 </div>
               </Button>
             </CardContent>
@@ -231,6 +157,9 @@ export default function TestPage() {
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             )}
+            <Button onClick={handleSkip} variant="outline" className="ml-4">
+              跳过
+            </Button>
           </div>
         </div>
       </div>
