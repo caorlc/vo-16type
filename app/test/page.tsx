@@ -39,9 +39,38 @@ export default function TestPage() {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Calculate 16タイプ性格診断 type based on answers using calcMBTI function
     const result = calcMBTI(answers)
+
+    try {
+      // 获取IP并保存结果
+      const ipResponse = await fetch('/api/get-ip')
+      const { ip } = await ipResponse.json()
+      
+      await fetch('/api/save-result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          ip, 
+          result: {
+            type: result.type,
+            detail: result.detail,
+            timestamp: new Date().toISOString(),
+          }
+        })
+      })
+    } catch (error) {
+      console.error('保存失败:', error)
+    }
+    
+    // 清除旧的结果并保存新结果
+    const keys = Object.keys(localStorage)
+    keys.forEach(key => {
+      if (key.startsWith('16type_result_')) {
+        localStorage.removeItem(key)
+      }
+    })
 
     // Store result in localStorage for demo
     localStorage.setItem(
@@ -56,12 +85,42 @@ export default function TestPage() {
     router.push(`/result/${sessionId}`)
   }
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
     const randomAnswers: Record<number, "A" | "B"> = {}
     for (let i = 1; i <= 70; i++) {
       randomAnswers[i] = Math.random() > 0.5 ? "A" : "B"
     }
     const result = calcMBTI(randomAnswers)
+    
+    try {
+      // 获取IP并保存结果
+      const ipResponse = await fetch('/api/get-ip')
+      const { ip } = await ipResponse.json()
+      
+      await fetch('/api/save-result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          ip, 
+          result: {
+            type: result.type,
+            detail: result.detail,
+            timestamp: new Date().toISOString(),
+          }
+        })
+      })
+    } catch (error) {
+      console.error('保存失败:', error)
+    }
+    
+    // 清除旧的结果并保存新结果
+    const keys = Object.keys(localStorage)
+    keys.forEach(key => {
+      if (key.startsWith('16type_result_')) {
+        localStorage.removeItem(key)
+      }
+    })
+    
     localStorage.setItem(
       `16type_result_${sessionId}`,
       JSON.stringify({

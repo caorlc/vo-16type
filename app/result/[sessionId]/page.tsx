@@ -79,12 +79,36 @@ export default function ResultPage() {
   const sessionId = params.sessionId as string
 
   useEffect(() => {
-    const storedResult = localStorage.getItem(`16type_result_${sessionId}`)
-    if (storedResult) {
-      setResult(JSON.parse(storedResult))
-    } else {
-      router.push("/test")
+    const loadResult = async () => {
+      // 先尝试从localStorage加载
+      const storedResult = localStorage.getItem(`16type_result_${sessionId}`)
+      if (storedResult) {
+        setResult(JSON.parse(storedResult))
+        return
+      }
+      
+      // 如果localStorage没有，尝试从服务器获取
+      try {
+        const ipResponse = await fetch('/api/get-ip')
+        const { ip } = await ipResponse.json()
+        
+        const resultResponse = await fetch(`/api/get-result?ip=${ip}`)
+        const { result: serverResult } = await resultResponse.json()
+        
+        if (serverResult) {
+          setResult(serverResult)
+          // 保存到localStorage
+          localStorage.setItem(`16type_result_${sessionId}`, JSON.stringify(serverResult))
+        } else {
+          router.push("/test")
+        }
+      } catch (error) {
+        console.error('加载失败:', error)
+        router.push("/test")
+      }
     }
+    
+    loadResult()
   }, [sessionId, router])
 
   if (!result) {

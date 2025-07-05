@@ -4,9 +4,57 @@ import Link from "next/link";
 import Header from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: '16タイプ性格診断 | 日本人のためのMBTI診断テスト',
+  description: '世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。科学的根拠に基づいたMBTI診断で、16の性格タイプからあなたにぴったりのタイプを特定します。',
+  keywords: '16タイプ,16タイプ性格診断,MBTI,性格診断,性格テスト,日本人,カール・ユング,心理テスト,自己分析,キャリア診断',
+  authors: [{ name: '16タイプ性格診断' }],
+  creator: '16タイプ性格診断',
+  publisher: '16タイプ性格診断',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://your-domain.com'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: '16タイプ性格診断 | 日本人のためのMBTI診断テスト',
+    description: '世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。科学的根拠に基づいたMBTI診断で、16の性格タイプからあなたにぴったりのタイプを特定します。',
+    url: 'https://your-domain.com',
+    siteName: '16タイプ性格診断',
+    locale: 'ja_JP',
+    type: 'website',
+    images: [
+      {
+        url: '/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: '16タイプ性格診断 - 日本人のためのMBTI診断テスト',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '16タイプ性格診断 | 日本人のためのMBTI診断テスト',
+    description: '世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。',
+    images: ['/images/twitter-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'your-google-verification-code',
+  },
 }
 
 export default function RootLayout({
@@ -15,7 +63,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="ja">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#f97316" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="16タイプ診断" />
+      </head>
       <body>
         <Header />
         {children}
