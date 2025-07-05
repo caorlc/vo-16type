@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { NextRequest, NextResponse } from 'next/server';
 import { createDB } from '@/lib/db';
 import { TestResultService, TestCompletionService, AnalyticsService } from '@/lib/db/queries';
