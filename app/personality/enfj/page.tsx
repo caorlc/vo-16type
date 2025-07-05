@@ -26,7 +26,7 @@ export default function ENFJPage() {
             <p>{feature.content}</p>
             {index === 0 && (
               <div className="my-8 flex justify-center">
-                <Image src="/images/enfj.png" alt="ENFJイメージ" width={320} height={320} className="rounded-lg shadow-lg" />
+                <Image src="/images/enfj.png" alt="ENFJのイメージ" width={320} height={320} className="rounded-lg shadow-lg" />
               </div>
             )}
           </div>
