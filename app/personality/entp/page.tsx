@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import Image from "next/image";
 // @ts-ignore
 import personalityContent from "../../../data/personality-content.json";
