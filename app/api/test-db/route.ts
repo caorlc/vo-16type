@@ -1,5 +1,5 @@
-export const runtime = 'edge';
 import { NextRequest, NextResponse } from 'next/server';
+export const runtime = 'edge';
 import { createDB } from '@/lib/db';
 import { TestResultService, TestCompletionService, AnalyticsService } from '@/lib/db/queries';
 import { sql } from 'drizzle-orm';
