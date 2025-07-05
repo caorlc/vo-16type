@@ -2,16 +2,15 @@ export const runtime = 'edge';
 import { NextRequest, NextResponse } from 'next/server'
 import { createDB } from '@/lib/db'
 import { TestResultService, TestCompletionService } from '@/lib/db/queries'
-import { nanoid } from 'nanoid'
 
 // 生成唯一session ID
 function generateSessionId(): string {
-  return nanoid(16)
+  return Math.random().toString(36).substr(2, 16)
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const { ip, result } = await request.json()
+    const { ip, result, sessionId } = await request.json()
     
     // 获取D1数据库实例
     const d1 = (process.env as any).DB
@@ -27,8 +26,8 @@ export async function POST(request: NextRequest) {
     const testResultService = new TestResultService(db)
     const testCompletionService = new TestCompletionService(db)
     
-    // 生成唯一session ID
-    const sessionId = generateSessionId()
+    // 使用传入的sessionId，如果没有则生成新的
+    const finalSessionId = sessionId || generateSessionId()
     
     // 保存测试结果到D1数据库
     await testResultService.saveResult({

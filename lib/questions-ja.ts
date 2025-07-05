@@ -98,11 +98,16 @@ export function calcMBTI(answers: Record<number, "A" | "B">) {
   const tf = count(TF)
   const jp = count(JP)
 
+  console.log('各维度统计:', { EI: ei, SN: sn, TF: tf, JP: jp })
+
+  // 确保每个维度至少有一个答案，否则使用默认值
   const type =
     (ei.a > ei.b ? "E" : "I") +
     (sn.a > sn.b ? "S" : "N") +
     (tf.a > tf.b ? "T" : "F") +
     (jp.a > jp.b ? "J" : "P")
+
+  console.log('最终类型:', type)
 
   return {
     type,

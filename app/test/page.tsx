@@ -40,8 +40,18 @@ export default function TestPage() {
   }
 
   const handleSubmit = async () => {
+    // 验证是否回答了所有问题
+    const answeredCount = Object.keys(answers).length
+    console.log('答案统计:', { answeredCount, totalQuestions: questions.length, answers })
+    
+    if (answeredCount < questions.length) {
+      alert(`请回答所有问题后再提交。当前已回答 ${answeredCount}/${questions.length} 个问题。`)
+      return
+    }
+
     // Calculate 16タイプ性格診断 type based on answers using calcMBTI function
     const result = calcMBTI(answers)
+    console.log('计算结果:', result)
 
     try {
       // 获取IP并保存结果
@@ -53,6 +63,7 @@ export default function TestPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           ip, 
+          sessionId,
           result: {
             type: result.type,
             detail: result.detail,
@@ -102,6 +113,7 @@ export default function TestPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           ip, 
+          sessionId,
           result: {
             type: result.type,
             detail: result.detail,
