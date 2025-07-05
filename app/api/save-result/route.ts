@@ -1,46 +1,56 @@
 import { NextRequest, NextResponse } from 'next/server'
-import fs from 'fs/promises'
-import path from 'path'
+import { createDB } from '@/lib/db'
+import { TestResultService, TestCompletionService } from '@/lib/db/queries'
+import { nanoid } from 'nanoid'
 
-interface StoredResult {
-  ip: string
-  result: any
-  timestamp: number
-  expiresAt: number
+// 生成唯一session ID
+function generateSessionId(): string {
+  return nanoid(16)
 }
-
-const STORAGE_FILE = path.join(process.cwd(), 'data', 'results.json')
 
 export async function POST(request: NextRequest) {
   try {
     const { ip, result } = await request.json()
     
-    // 读取现有数据
-    let results: StoredResult[] = []
-    try {
-      const data = await fs.readFile(STORAGE_FILE, 'utf-8')
-      results = JSON.parse(data)
-    } catch (error) {
-      // 文件不存在，使用空数组
+    // 获取D1数据库实例
+    const d1 = (process.env as any).DB
+    
+    if (!d1) {
+      return NextResponse.json({ 
+        error: 'D1 数据库未配置',
+        message: '请在 Cloudflare Pages 中绑定 D1 数据库'
+      }, { status: 500 })
     }
+
+    const db = createDB(d1)
+    const testResultService = new TestResultService(db)
+    const testCompletionService = new TestCompletionService(db)
     
-    // 移除同一IP的旧数据
-    results = results.filter(item => item.ip !== ip)
+    // 生成唯一session ID
+    const sessionId = generateSessionId()
     
-    // 添加新数据
-    const storedResult: StoredResult = {
-      ip,
-      result,
-      timestamp: Date.now(),
-      expiresAt: Date.now() + 24 * 60 * 60 * 1000 // 24小时
-    }
-    results.push(storedResult)
+    // 保存测试结果到D1数据库
+    await testResultService.saveResult({
+      session_id: sessionId,
+      ip_address: ip,
+      user_agent: request.headers.get('user-agent') || undefined,
+      mbti_type: result.type,
+      dimension_scores: JSON.stringify(result.detail),
+      completion_time: result.completion_time
+    })
     
-    // 保存到文件
-    await fs.mkdir(path.dirname(STORAGE_FILE), { recursive: true })
-    await fs.writeFile(STORAGE_FILE, JSON.stringify(results))
+    // 记录测试完成统计
+    await testCompletionService.recordTestCompletion({
+      session_id: sessionId,
+      mbti_type: result.type,
+      completion_time: result.completion_time,
+      question_count: 70
+    })
     
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ 
+      success: true, 
+      session_id: sessionId 
+    })
   } catch (error) {
     console.error('保存失败:', error)
     return NextResponse.json({ error: '保存失败' }, { status: 500 })
