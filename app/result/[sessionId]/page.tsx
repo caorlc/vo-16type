@@ -102,6 +102,22 @@ export default function ResultPage() {
     }
   }
 
+  // 新增：拉起 creem 支付
+  const handleUnlock = async () => {
+    if (!sessionId) return;
+    try {
+      const res = await fetch(`/api/create-creem-order?sessionId=${sessionId}`);
+      const data = await res.json();
+      if (data && data.paymentUrl) {
+        window.location.href = data.paymentUrl;
+      } else {
+        alert('支付链接获取失败');
+      }
+    } catch (e) {
+      alert('支付发起失败');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
       <div className="container mx-auto px-4 py-12">
@@ -213,7 +229,7 @@ export default function ResultPage() {
                     title="今すぐロックを解除"
                     desc="このセクションでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。続きはプレミアムでご覧いただけます。"
                     buttonText="すべての結果のロックを解除"
-                    onUnlockClick={scrollToUnlock}
+                    onUnlockClick={handleUnlock}
                   >
                     <p>{typeData.strengthsDevelopment.description}</p>
                     <ul className="list-disc pl-4 mt-2">
@@ -248,7 +264,7 @@ export default function ResultPage() {
                       title="今すぐロックを解除"
                       desc="このセクションでは、あなたの性格タイプが直面しやすい課題の根本原因を詳しく解説しています。詳細を読むにはプレミアム登録が必要です。"
                       buttonText="すべての結果のロックを解除"
-                      onUnlockClick={scrollToUnlock}
+                      onUnlockClick={handleUnlock}
                     >
                       <div>{typeData.potentialProblems.causes}</div>
                     </PremiumMask>
@@ -259,7 +275,7 @@ export default function ResultPage() {
                       title="今すぐロックを解除"
                       desc="ここでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。続きはプレミアムでご覧いただけます。"
                       buttonText="すべての結果のロックを解除"
-                      onUnlockClick={scrollToUnlock}
+                      onUnlockClick={handleUnlock}
                     >
                       <div>{typeData.potentialProblems.solutions}</div>
                     </PremiumMask>
@@ -281,7 +297,7 @@ export default function ResultPage() {
                     title="10の成功ルールをアンロック"
                     desc="あなたの性格に合わせた成功の秘訣を今すぐチェック！"
                     buttonText="10のルールをアンロック"
-                    onUnlockClick={scrollToUnlock}
+                    onUnlockClick={handleUnlock}
                   >
                     <div>
                       {typeData.successRules.map((rule, idx) => (
@@ -313,7 +329,7 @@ export default function ResultPage() {
               size="lg"
               variant="secondary"
               className="bg-white text-orange-500 hover:bg-gray-100 px-8 py-4 text-lg font-bold rounded-full shadow-none"
-              onClick={() => router.push(`/checkout/${sessionId}`)}
+              onClick={handleUnlock}
             >
               すべての結果のロックを解除（$2.9）
             </Button>
