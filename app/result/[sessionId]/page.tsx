@@ -30,7 +30,7 @@ export default function ResultPage() {
   const sessionId = params.sessionId as string
   const [premiumUnlocked, setPremiumUnlocked] = useState(false)
 
-  const paymentLink = "https://www.creem.io/test/payment/prod_2Zj01wQN8eqixGieZrn7Me"
+  const paymentLink = `https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_wtm1MOtOoSnHCj1UUospQhXgCVD9VSpsb0AGf3MQ4WP/redirect?metadata[sessionId]=${sessionId}`;
 
   useEffect(() => {
     const loadResult = async () => {

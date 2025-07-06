@@ -1,17 +1,8 @@
 import React from "react";
 
 export async function unlockPremium(sessionId: string) {
-  try {
-    const res = await fetch(`/api/create-creem-order?sessionId=${sessionId}`);
-    const data = await res.json();
-    if (data && data.paymentUrl) {
-      window.location.href = data.paymentUrl;
-    } else {
-      alert('支払いリンクの取得に失敗しました');
-    }
-  } catch (e) {
-    alert('支払いの処理中にエラーが発生しました');
-  }
+  // 直接跳转到Polar的checkout link，带上sessionId
+  window.location.href = `https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_wtm1MOtOoSnHCj1UUospQhXgCVD9VSpsb0AGf3MQ4WP/redirect?metadata[sessionId]=${sessionId}`;
 }
 
 // 你可以根据需要扩展为完整组件或 hook 
