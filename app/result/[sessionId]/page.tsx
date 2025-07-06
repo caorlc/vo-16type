@@ -28,6 +28,8 @@ export default function ResultPage() {
   const [loading, setLoading] = useState(true)
   const sessionId = params.sessionId as string
 
+  const paymentLink = "https://www.creem.io/test/payment/prod_2Zj01wQN8eqixGieZrn7Me"
+
   useEffect(() => {
     const loadResult = async () => {
       // 先尝试从localStorage加载
@@ -213,6 +215,7 @@ export default function ResultPage() {
                     title="今すぐロックを解除"
                     desc="このセクションでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。続きはプレミアムでご覧いただけます。"
                     buttonText="すべての結果のロックを解除"
+                    onUnlockClick={() => window.open(paymentLink, "_blank")}
                   >
                     <p>{typeData.strengthsDevelopment.description}</p>
                     <ul className="list-disc pl-4 mt-2">
@@ -247,6 +250,7 @@ export default function ResultPage() {
                       title="今すぐロックを解除"
                       desc="このセクションでは、あなたの性格タイプが直面しやすい課題の根本原因を詳しく解説しています。詳細を読むにはプレミアム登録が必要です。"
                       buttonText="すべての結果のロックを解除"
+                      onUnlockClick={() => window.open(paymentLink, "_blank")}
                     >
                       <div>{typeData.potentialProblems.causes}</div>
                     </PremiumMask>
@@ -257,6 +261,7 @@ export default function ResultPage() {
                       title="今すぐロックを解除"
                       desc="ここでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。続きはプレミアムでご覧いただけます。"
                       buttonText="すべての結果のロックを解除"
+                      onUnlockClick={() => window.open(paymentLink, "_blank")}
                     >
                       <div>{typeData.potentialProblems.solutions}</div>
                     </PremiumMask>
@@ -278,6 +283,7 @@ export default function ResultPage() {
                     title="10の成功ルールをアンロック"
                     desc="あなたの性格に合わせた成功の秘訣を今すぐチェック！"
                     buttonText="10のルールをアンロック"
+                    onUnlockClick={() => window.open(paymentLink, "_blank")}
                   >
                     <div>
                       {typeData.successRules.map((rule, idx) => (
@@ -309,6 +315,7 @@ export default function ResultPage() {
               size="lg"
               variant="secondary"
               className="bg-white text-orange-500 hover:bg-gray-100 px-8 py-4 text-lg font-bold rounded-full shadow-none"
+              onClick={() => window.open(paymentLink, "_blank")}
             >
               すべての結果のロックを解除（$2.9）
             </Button>
