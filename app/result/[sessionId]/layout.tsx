@@ -1,3 +1,3 @@
-export const runtime = 'edge';
-
-// ... existing code ... 
+export default function ResultLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+} 

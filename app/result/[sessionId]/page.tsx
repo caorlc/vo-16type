@@ -15,9 +15,9 @@ import PremiumMask from "@/components/PremiumMask"
 import personalityData from '@/data/personality-results.json'
 
 interface MBTIResult {
-  type: string
-  detail: Record<"EI"|"SN"|"TF"|"JP", { a: number, b: number }>
-  timestamp: string
+  mbtiType: string
+  // detail: Record<"EI"|"SN"|"TF"|"JP", { a: number, b: number }>
+  // timestamp: string
 }
 
 export default function ResultPage() {
@@ -25,6 +25,7 @@ export default function ResultPage() {
   const router = useRouter()
   const [result, setResult] = useState<MBTIResult | null>(null)
   const [showPremium, setShowPremium] = useState(false)
+  const [loading, setLoading] = useState(true)
   const sessionId = params.sessionId as string
 
   useEffect(() => {
@@ -32,7 +33,13 @@ export default function ResultPage() {
       // 先尝试从localStorage加载
       const storedResult = localStorage.getItem(`16type_result_${sessionId}`)
       if (storedResult) {
-        setResult(JSON.parse(storedResult))
+        const parsed = JSON.parse(storedResult)
+        // 兼容只存 type 字段的情况
+        if (!parsed.mbtiType && parsed.type) {
+          parsed.mbtiType = parsed.type
+        }
+        setResult(parsed)
+        setLoading(false)
         return
       }
       
@@ -40,11 +47,16 @@ export default function ResultPage() {
       try {
         const resultResponse = await fetch(`/api/get-result?sessionId=${sessionId}`)
         const { result: serverResult } = await resultResponse.json()
+        console.log('serverResult', serverResult)
         
+        if (serverResult && !serverResult.mbtiType && serverResult.type) {
+          serverResult.mbtiType = serverResult.type
+        }
         if (serverResult) {
           setResult(serverResult)
           // 保存到localStorage
           localStorage.setItem(`16type_result_${sessionId}`, JSON.stringify(serverResult))
+          setLoading(false)
         } else {
           router.push("/test")
         }
@@ -57,13 +69,24 @@ export default function ResultPage() {
     loadResult()
   }, [sessionId, router])
 
-  if (!result) {
-    return <div>読み込み中...</div>
+  if (loading) {
+    return <div>加载中...</div>
+  }
+  if (!result || !result.mbtiType) {
+    return <div>未找到类型</div>
   }
 
   // 获取对应的人格类型数据
-  const typeData = personalityData[result.type.toLowerCase() as keyof typeof personalityData]
-  const typeInfo = typeData?.basicInfo || {
+  const mbtiType = result.mbtiType || ''
+  const typeData = personalityData[mbtiType.toLowerCase() as keyof typeof personalityData]
+  console.log('result.mbtiType:', JSON.stringify(result.mbtiType));
+  if (!mbtiType) {
+    return <div>未找到类型</div>;
+  }
+  if (!typeData) {
+    return <div>未知类型：{mbtiType}</div>;
+  }
+  const typeInfo = typeData.basicInfo || {
     name: "未知のタイプ",
     description: "このタイプについての情報はまだ準備中です",
     color: "bg-gray-500",
@@ -88,7 +111,7 @@ export default function ResultPage() {
             <div className="flex-1 md:pr-8 text-center md:text-left">
               <div className="text-lg font-semibold mb-2 text-gray-700">あなたの性格タイプ:</div>
               <div className="text-5xl md:text-6xl font-bold mb-2 text-gray-900">{typeInfo.name}</div>
-              <div className="text-3xl md:text-4xl font-bold text-gray-800">{result.type}</div>
+              <div className="text-3xl md:text-4xl font-bold text-gray-800">{result.mbtiType}</div>
               {typeData?.typeDescription && (
                 <p className="mt-6 text-lg text-gray-700 whitespace-pre-line">
                   {typeData.typeDescription}
@@ -96,7 +119,7 @@ export default function ResultPage() {
               )}
             </div>
             <img
-              src={`/images/${result.type.toLowerCase()}.png`}
+              src={`/images/${result.mbtiType.toLowerCase()}.png`}
               alt={typeInfo.name}
               className="w-56 h-auto rounded-xl object-contain"
             />
@@ -111,59 +134,6 @@ export default function ResultPage() {
                 </CardDescription>
               </CardHeader>
             </Card>
-          )}
-
-          {/* General Traits模块 */}
-          {result.detail && (
-            <div className="mb-8 bg-white rounded-xl p-6 shadow">
-              {([
-                { key: "EI", leftJa: "外向型", rightJa: "内向型", color: "bg-sky-600", text: "text-sky-600" },
-                { key: "SN", leftJa: "直感型", rightJa: "現実型", color: "bg-yellow-500", text: "text-yellow-500" },
-                { key: "TF", leftJa: "感情型", rightJa: "思考型", color: "bg-green-600", text: "text-green-600" },
-                { key: "JP", leftJa: "探索型", rightJa: "計画型", color: "bg-purple-600", text: "text-purple-600" },
-              ] as { key: keyof MBTIResult['detail'], leftJa: string, rightJa: string, color: string, text: string }[]).map((dim) => {
-                const a = result.detail[dim.key].a;
-                const b = result.detail[dim.key].b;
-                const total = a + b;
-                const leftPercent = Math.round((a / total) * 100);
-                const rightPercent = 100 - leftPercent;
-                const isLeft = leftPercent >= rightPercent;
-                const percent = isLeft ? leftPercent : rightPercent;
-                const label = isLeft ? dim.leftJa : dim.rightJa;
-                const showLabelClass = dim.text;
-                const circlePos = percent;
-
-                return (
-                  <div key={dim.key} className="mb-8">
-                    <div className="flex justify-center text-base font-bold mb-1">
-                      <span className={showLabelClass}>{percent}% {label}</span>
-                    </div>
-                    <div className="relative h-4 rounded-full bg-gray-200">
-                      <div
-                        className={`absolute top-0 left-0 h-4 rounded-full ${dim.color}`}
-                        style={{ width: `${percent}%` }}
-                      />
-                      {/* 圆点指示器 */}
-                      <div
-                        className="absolute top-1/2 -translate-y-1/2"
-                        style={{
-                          left: `calc(${circlePos}% - 14px)`,
-                          zIndex: 2,
-                        }}
-                      >
-                        <div className="w-7 h-7 bg-white border-4 border-gray-300 rounded-full flex items-center justify-center shadow">
-                          <div className={`w-3.5 h-3.5 rounded-full ${dim.color}`} />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex justify-between text-xs text-gray-700 mt-1">
-                      <span>{dim.leftJa}</span>
-                      <span>{dim.rightJa}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           )}
 
           {/* 性格特徴模块 */}
@@ -197,7 +167,7 @@ export default function ResultPage() {
                 <CardContent>
                   <p className="mb-4">{typeData.relationships.description}</p>
                   <div className="mb-4">
-                    <h3 className="text-xl font-bold mb-1">{`${result.type.toUpperCase()}の強み`}</h3>
+                    <h3 className="text-xl font-bold mb-1">{`${result.mbtiType.toUpperCase()}の強み`}</h3>
                     <ul className="list-none space-y-1">
                       {typeData.relationships.strengths.map((strength, idx) => (
                         <li key={idx}>🟢 {strength}</li>
@@ -205,7 +175,7 @@ export default function ResultPage() {
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold mb-1">{`${result.type.toUpperCase()}の弱み`}</h3>
+                    <h3 className="text-xl font-bold mb-1">{`${result.mbtiType.toUpperCase()}の弱み`}</h3>
                     <ul className="list-none space-y-1">
                       {typeData.relationships.weaknesses.map((weakness, idx) => (
                         <li key={idx}>🔴 {weakness}</li>
@@ -222,7 +192,7 @@ export default function ResultPage() {
             <section className="mb-8">
               <Card className="mb-4">
                 <CardHeader>
-                  <CardTitle>{`${result.type.toUpperCase()}にとって成功とは何を意味するのでしょうか？`}</CardTitle>
+                  <CardTitle>{`${result.mbtiType.toUpperCase()}にとって成功とは何を意味するのでしょうか？`}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p>{typeData.success}</p>
@@ -236,7 +206,7 @@ export default function ResultPage() {
             <section className="mb-8">
               <Card className="mb-4">
                 <CardHeader>
-                  <CardTitle>{`${result.type.toUpperCase()} の強みを最大限に発揮する方法`}</CardTitle>
+                  <CardTitle>{`${result.mbtiType.toUpperCase()} の強みを最大限に発揮する方法`}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <PremiumMask
@@ -251,7 +221,7 @@ export default function ResultPage() {
                         <li key={idx}>{strength}</li>
                       ))}
                     </ul>
-                    <p className="mt-2">内向的直観を発達させ、自分の認識の中に可能性を見ることができる程度まで発達した{result.type}は、これらの非常に特別な才能を享受するでしょう：</p>
+                    <p className="mt-2">内向的直観を発達させ、自分の認識の中に可能性を見ることができる程度まで発達した{result.mbtiType}は、これらの非常に特別な才能を享受するでしょう：</p>
                     <ul className="list-disc pl-4 mt-2">
                       {typeData.strengthsDevelopment.advancedStrengths.map((strength, idx) => (
                         <li key={idx}>{strength}</li>
@@ -304,7 +274,7 @@ export default function ResultPage() {
             <section className="mb-8">
               <Card className="mb-4 relative overflow-hidden">
                 <CardHeader>
-                  <CardTitle>{` ${result.type.toUpperCase()} が成功を達成するために生きるべき10のルール`}</CardTitle>
+                  <CardTitle>{` ${result.mbtiType.toUpperCase()} が成功を達成するために生きるべき10のルール`}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <PremiumMask
@@ -333,7 +303,7 @@ export default function ResultPage() {
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              {typeInfo.name}（{result.type}）の物語はまだ終わっていません
+              {typeInfo.name}（{result.mbtiType}）の物語はまだ終わっていません
             </h2>
             <p className="text-lg text-orange-100 mb-8">
               {typeInfo.description}。<br />

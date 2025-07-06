@@ -4,6 +4,7 @@ interface MBTIResult {
   type: string
   detail: Record<"EI"|"SN"|"TF"|"JP", { a: number, b: number }>
   timestamp: string
+  mbtiType?: string
 }
 
 export function useResult() {
@@ -31,7 +32,12 @@ export function useResult() {
           
           const resultData = localStorage.getItem(latestKey)
           if (resultData) {
-            setResult(JSON.parse(resultData))
+            const parsed = JSON.parse(resultData)
+            if (!parsed.mbtiType && parsed.type) {
+              parsed.mbtiType = parsed.type
+              localStorage.setItem(latestKey, JSON.stringify(parsed))
+            }
+            setResult(parsed)
           }
         } else {
           // 如果localStorage没有，尝试从服务器获取
@@ -43,6 +49,9 @@ export function useResult() {
             const { result: serverResult } = await resultResponse.json()
             
             if (serverResult) {
+              if (!serverResult.mbtiType && serverResult.type) {
+                serverResult.mbtiType = serverResult.type
+              }
               setResult(serverResult)
             }
           } catch (error) {

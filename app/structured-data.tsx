@@ -22,7 +22,7 @@ export default function StructuredData() {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "16タイプ性格診断（MBTI）とは何ですか？",
+        "name": "16タイプ性格診断（MBTとは何ですか？",
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "16タイプ性格診断（MBTI：Myers-Briggs Type Indicator）は、心理学者カール・ユングの心理学的類型論を基に開発された性格診断ツールです。16の性格タイプに分類し、あなたの思考パターン、価値観、行動傾向を明らかにします。世界中で最も信頼され、多くの企業や教育機関で活用されている16タイプ性格診断です。"

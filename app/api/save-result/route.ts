@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
       data: {
         sessionId,
         ipAddress: ip,
-        mbtiType: result.type
+        mbtiType: (result.type || '').trim().toUpperCase()
       }
     })
     

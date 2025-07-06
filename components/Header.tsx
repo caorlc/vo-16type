@@ -41,7 +41,7 @@ export default function Header() {
             ))}
             {result && (
               <Link
-                href={`/result/${result.type.toLowerCase()}`}
+                href={`/result/${(result.type || result.mbtiType || '').toLowerCase()}`}
                 className={
                   `text-gray-600 hover:text-gray-900` +
                   (pathname.includes('/result/') ? " font-bold text-orange-500" : "")

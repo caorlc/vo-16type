@@ -42,22 +42,34 @@ export default function TestPage() {
   const handleSubmit = async () => {
     // 验证是否回答了所有问题
     const answeredCount = Object.keys(answers).length
-    console.log('答案统计:', { answeredCount, totalQuestions: questions.length, answers })
-    
     if (answeredCount < questions.length) {
       alert(`请回答所有问题后再提交。当前已回答 ${answeredCount}/${questions.length} 个问题。`)
       return
     }
-
-    // Calculate 16タイプ性格診断 type based on answers using calcMBTI function
+    // 计算结果
     const result = calcMBTI(answers)
-    console.log('计算结果:', result)
-
+    // 先清除旧的结果
+    const keys = Object.keys(localStorage)
+    keys.forEach(key => {
+      if (key.startsWith('16type_result_')) {
+        localStorage.removeItem(key)
+      }
+    })
+    // 先本地存储
+    localStorage.setItem(
+      `16type_result_${sessionId}`,
+      JSON.stringify({
+        type: result.type,
+        detail: result.detail,
+        timestamp: new Date().toISOString(),
+      }),
+    )
+    // 立即跳转
+    router.push(`/result/${sessionId}`)
+    // 异步保存到数据库
     try {
-      // 获取IP并保存结果
       const ipResponse = await fetch('/api/get-ip')
       const { ip } = await ipResponse.json()
-      
       await fetch('/api/save-result', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -74,26 +86,6 @@ export default function TestPage() {
     } catch (error) {
       console.error('保存失败:', error)
     }
-    
-    // 清除旧的结果并保存新结果
-    const keys = Object.keys(localStorage)
-    keys.forEach(key => {
-      if (key.startsWith('16type_result_')) {
-        localStorage.removeItem(key)
-      }
-    })
-
-    // Store result in localStorage for demo
-    localStorage.setItem(
-      `16type_result_${sessionId}`,
-      JSON.stringify({
-        type: result.type,
-        detail: result.detail,
-        timestamp: new Date().toISOString(),
-      }),
-    )
-
-    router.push(`/result/${sessionId}`)
   }
 
   const handleSkip = async () => {
@@ -102,12 +94,28 @@ export default function TestPage() {
       randomAnswers[i] = Math.random() > 0.5 ? "A" : "B"
     }
     const result = calcMBTI(randomAnswers)
-    
+    // 先清除旧的结果
+    const keys = Object.keys(localStorage)
+    keys.forEach(key => {
+      if (key.startsWith('16type_result_')) {
+        localStorage.removeItem(key)
+      }
+    })
+    // 先本地存储
+    localStorage.setItem(
+      `16type_result_${sessionId}`,
+      JSON.stringify({
+        type: result.type,
+        detail: result.detail,
+        timestamp: new Date().toISOString(),
+      }),
+    )
+    // 立即跳转
+    router.push(`/result/${sessionId}`)
+    // 异步保存到数据库
     try {
-      // 获取IP并保存结果
       const ipResponse = await fetch('/api/get-ip')
       const { ip } = await ipResponse.json()
-      
       await fetch('/api/save-result', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -124,24 +132,6 @@ export default function TestPage() {
     } catch (error) {
       console.error('保存失败:', error)
     }
-    
-    // 清除旧的结果并保存新结果
-    const keys = Object.keys(localStorage)
-    keys.forEach(key => {
-      if (key.startsWith('16type_result_')) {
-        localStorage.removeItem(key)
-      }
-    })
-    
-    localStorage.setItem(
-      `16type_result_${sessionId}`,
-      JSON.stringify({
-        type: result.type,
-        detail: result.detail,
-        timestamp: new Date().toISOString(),
-      }),
-    )
-    router.push(`/result/${sessionId}`)
   }
 
   const currentQ = questions[currentQuestion]
@@ -169,7 +159,7 @@ export default function TestPage() {
               <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-orange-500">{currentQuestion + 1}</span>
               </div>
-              <CardTitle className="text-2xl md:text-3xl text-gray-900 leading-relaxed">{currentQ.text}</CardTitle>
+              <CardTitle className="text-2xl md:text-3xl text-gray-900 leading-relaxed break-words whitespace-normal w-full max-w-full">{currentQ.text}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <Button
@@ -182,7 +172,7 @@ export default function TestPage() {
                   <span className="bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
                     A
                   </span>
-                  <span className="text-lg leading-relaxed">{currentQ.a}</span>
+                  <span className="text-lg leading-relaxed break-words whitespace-normal w-full max-w-full">{currentQ.a}</span>
                 </div>
               </Button>
 
@@ -196,7 +186,7 @@ export default function TestPage() {
                   <span className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
                     B
                   </span>
-                  <span className="text-lg leading-relaxed">{currentQ.b}</span>
+                  <span className="text-lg leading-relaxed break-words whitespace-normal w-full max-w-full">{currentQ.b}</span>
                 </div>
               </Button>
             </CardContent>

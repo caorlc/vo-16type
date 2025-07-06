@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const ip = searchParams.get("ip")
 
     if (!sessionId && !ip) {
-      return NextResponse.json({ error: "sessionId或IP参数缺失" }, { status: 400 })
+      return NextResponse.json({ error: "sessionId鎴朓P涓虹┖" }, { status: 400 })
     }
 
     let result = null
@@ -27,9 +27,13 @@ export async function GET(request: NextRequest) {
       })
     }
 
+    if (!result) {
+      return NextResponse.json({ result: null })
+    }
+
     return NextResponse.json({ result })
   } catch (error) {
-    console.error("获取结果失败:", error)
-    return NextResponse.json({ result: null })
+    console.error("鑾峰彇缁撴灉澶辫触:", error)
+    return NextResponse.json({ error: String(error), result: null }, { status: 500 })
   }
 }
