@@ -5,11 +5,11 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     // creem 通知内容结构需根据官方文档调整
-    const eventType = body.event || body.type
-    const order = body.data || body.order || {}
-    // 你需要根据 creem 的 webhook payload 结构调整解析方式
+    const eventType = body.event || body.type || body.eventType
+    const object = body.object || {}
+    const order = object.order || body.data || body.order || {}
     const sessionId = order.metadata?.sessionId || order.sessionId
-    const status = order.status || body.status
+    const status = order.status || object.status || body.status
 
     if (!sessionId) {
       return NextResponse.json({ error: "缺少 sessionId" }, { status: 400 })

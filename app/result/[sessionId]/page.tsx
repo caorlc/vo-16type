@@ -2,7 +2,7 @@
 export const runtime = 'edge';
 
 import { useEffect, useState } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -23,10 +23,12 @@ interface MBTIResult {
 export default function ResultPage() {
   const params = useParams()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [result, setResult] = useState<MBTIResult | null>(null)
   const [showPremium, setShowPremium] = useState(false)
   const [loading, setLoading] = useState(true)
   const sessionId = params.sessionId as string
+  const [premiumUnlocked, setPremiumUnlocked] = useState(false)
 
   const paymentLink = "https://www.creem.io/test/payment/prod_2Zj01wQN8eqixGieZrn7Me"
 
@@ -70,6 +72,20 @@ export default function ResultPage() {
     
     loadResult()
   }, [sessionId, router])
+
+  useEffect(() => {
+    // 检查本地是否已解锁
+    if (localStorage.getItem(`16type_premium_${sessionId}`) === "1") {
+      setPremiumUnlocked(true)
+      return
+    }
+    // 检查 URL pay=1
+    if (searchParams.get("pay") === "1") {
+      // 这里可以加后端校验，确认支付成功（如有 webhook 可省略）
+      setPremiumUnlocked(true)
+      localStorage.setItem(`16type_premium_${sessionId}`, "1")
+    }
+  }, [sessionId, searchParams])
 
   if (loading) {
     return <div>加载中...</div>
@@ -216,6 +232,7 @@ export default function ResultPage() {
                     desc="このセクションでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。続きはプレミアムでご覧いただけます。"
                     buttonText="すべての結果のロックを解除"
                     onUnlockClick={() => window.open(paymentLink, "_blank")}
+                    unlocked={premiumUnlocked}
                   >
                     <p>{typeData.strengthsDevelopment.description}</p>
                     <ul className="list-disc pl-4 mt-2">
@@ -251,6 +268,7 @@ export default function ResultPage() {
                       desc="このセクションでは、あなたの性格タイプが直面しやすい課題の根本原因を詳しく解説しています。詳細を読むにはプレミアム登録が必要です。"
                       buttonText="すべての結果のロックを解除"
                       onUnlockClick={() => window.open(paymentLink, "_blank")}
+                      unlocked={premiumUnlocked}
                     >
                       <div>{typeData.potentialProblems.causes}</div>
                     </PremiumMask>
@@ -262,6 +280,7 @@ export default function ResultPage() {
                       desc="ここでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。続きはプレミアムでご覧いただけます。"
                       buttonText="すべての結果のロックを解除"
                       onUnlockClick={() => window.open(paymentLink, "_blank")}
+                      unlocked={premiumUnlocked}
                     >
                       <div>{typeData.potentialProblems.solutions}</div>
                     </PremiumMask>
@@ -284,6 +303,7 @@ export default function ResultPage() {
                     desc="あなたの性格に合わせた成功の秘訣を今すぐチェック！"
                     buttonText="10のルールをアンロック"
                     onUnlockClick={() => window.open(paymentLink, "_blank")}
+                    unlocked={premiumUnlocked}
                   >
                     <div>
                       {typeData.successRules.map((rule, idx) => (

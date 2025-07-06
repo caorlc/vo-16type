@@ -8,9 +8,13 @@ interface PremiumMaskProps {
   desc?: string
   buttonText?: string
   onUnlockClick?: () => void
+  unlocked?: boolean
 }
 
-export default function PremiumMask({ children, title, desc, buttonText, onUnlockClick }: PremiumMaskProps) {
+export default function PremiumMask({ children, title, desc, buttonText, onUnlockClick, unlocked }: PremiumMaskProps) {
+  if (unlocked) {
+    return <>{children}</>;
+  }
   return (
     <div className="relative w-full h-full">
       {/* 模糊内容 */}
