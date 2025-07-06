@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TestResult {
+  id                String   @id @default(cuid())
+  sessionId         String   @unique
+  ipAddress         String
+  mbtiType          String
+  isPremiumUnlocked Boolean  @default(false)
+  createdAt         DateTime @default(now())
+
+  orders Order[]
+
+  @@index([ipAddress])
+  @@index([mbtiType])
+  @@index([createdAt])
+}
+
+model Order {
+  id           String   @id @default(cuid())
+  sessionId    String
+  orderId      String   @unique
+  amount       Int
+  currency     String   @default("USD")
+  paymentMethod String?
+  status       String
+  productType  String   @default("premium_report")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  testResult   TestResult @relation(fields: [sessionId], references: [sessionId])
+
+  @@index([sessionId])
+  @@index([orderId])
+  @@index([status])
+}

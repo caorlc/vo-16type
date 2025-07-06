@@ -38,10 +38,7 @@ export default function ResultPage() {
       
       // 如果localStorage没有，尝试从服务器获取
       try {
-        const ipResponse = await fetch('/api/get-ip')
-        const { ip } = await ipResponse.json()
-        
-        const resultResponse = await fetch(`/api/get-result?ip=${ip}`)
+        const resultResponse = await fetch(`/api/get-result?sessionId=${sessionId}`)
         const { result: serverResult } = await resultResponse.json()
         
         if (serverResult) {
@@ -117,55 +114,57 @@ export default function ResultPage() {
           )}
 
           {/* General Traits模块 */}
-          <div className="mb-8 bg-white rounded-xl p-6 shadow">
-            {([
-              { key: "EI", leftJa: "外向型", rightJa: "内向型", color: "bg-sky-600", text: "text-sky-600" },
-              { key: "SN", leftJa: "直感型", rightJa: "現実型", color: "bg-yellow-500", text: "text-yellow-500" },
-              { key: "TF", leftJa: "感情型", rightJa: "思考型", color: "bg-green-600", text: "text-green-600" },
-              { key: "JP", leftJa: "探索型", rightJa: "計画型", color: "bg-purple-600", text: "text-purple-600" },
-            ] as { key: keyof MBTIResult['detail'], leftJa: string, rightJa: string, color: string, text: string }[]).map((dim) => {
-              const a = result.detail[dim.key].a;
-              const b = result.detail[dim.key].b;
-              const total = a + b;
-              const leftPercent = Math.round((a / total) * 100);
-              const rightPercent = 100 - leftPercent;
-              const isLeft = leftPercent >= rightPercent;
-              const percent = isLeft ? leftPercent : rightPercent;
-              const label = isLeft ? dim.leftJa : dim.rightJa;
-              const showLabelClass = dim.text;
-              const circlePos = percent;
+          {result.detail && (
+            <div className="mb-8 bg-white rounded-xl p-6 shadow">
+              {([
+                { key: "EI", leftJa: "外向型", rightJa: "内向型", color: "bg-sky-600", text: "text-sky-600" },
+                { key: "SN", leftJa: "直感型", rightJa: "現実型", color: "bg-yellow-500", text: "text-yellow-500" },
+                { key: "TF", leftJa: "感情型", rightJa: "思考型", color: "bg-green-600", text: "text-green-600" },
+                { key: "JP", leftJa: "探索型", rightJa: "計画型", color: "bg-purple-600", text: "text-purple-600" },
+              ] as { key: keyof MBTIResult['detail'], leftJa: string, rightJa: string, color: string, text: string }[]).map((dim) => {
+                const a = result.detail[dim.key].a;
+                const b = result.detail[dim.key].b;
+                const total = a + b;
+                const leftPercent = Math.round((a / total) * 100);
+                const rightPercent = 100 - leftPercent;
+                const isLeft = leftPercent >= rightPercent;
+                const percent = isLeft ? leftPercent : rightPercent;
+                const label = isLeft ? dim.leftJa : dim.rightJa;
+                const showLabelClass = dim.text;
+                const circlePos = percent;
 
-              return (
-                <div key={dim.key} className="mb-8">
-                  <div className="flex justify-center text-base font-bold mb-1">
-                    <span className={showLabelClass}>{percent}% {label}</span>
-                  </div>
-                  <div className="relative h-4 rounded-full bg-gray-200">
-                    <div
-                      className={`absolute top-0 left-0 h-4 rounded-full ${dim.color}`}
-                      style={{ width: `${percent}%` }}
-                    />
-                    {/* 圆点指示器 */}
-                    <div
-                      className="absolute top-1/2 -translate-y-1/2"
-                      style={{
-                        left: `calc(${circlePos}% - 14px)`,
-                        zIndex: 2,
-                      }}
-                    >
-                      <div className="w-7 h-7 bg-white border-4 border-gray-300 rounded-full flex items-center justify-center shadow">
-                        <div className={`w-3.5 h-3.5 rounded-full ${dim.color}`} />
+                return (
+                  <div key={dim.key} className="mb-8">
+                    <div className="flex justify-center text-base font-bold mb-1">
+                      <span className={showLabelClass}>{percent}% {label}</span>
+                    </div>
+                    <div className="relative h-4 rounded-full bg-gray-200">
+                      <div
+                        className={`absolute top-0 left-0 h-4 rounded-full ${dim.color}`}
+                        style={{ width: `${percent}%` }}
+                      />
+                      {/* 圆点指示器 */}
+                      <div
+                        className="absolute top-1/2 -translate-y-1/2"
+                        style={{
+                          left: `calc(${circlePos}% - 14px)`,
+                          zIndex: 2,
+                        }}
+                      >
+                        <div className="w-7 h-7 bg-white border-4 border-gray-300 rounded-full flex items-center justify-center shadow">
+                          <div className={`w-3.5 h-3.5 rounded-full ${dim.color}`} />
+                        </div>
                       </div>
                     </div>
+                    <div className="flex justify-between text-xs text-gray-700 mt-1">
+                      <span>{dim.leftJa}</span>
+                      <span>{dim.rightJa}</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between text-xs text-gray-700 mt-1">
-                    <span>{dim.leftJa}</span>
-                    <span>{dim.rightJa}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* 性格特徴模块 */}
           {typeData?.personalityTraits && (

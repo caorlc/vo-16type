@@ -1,28 +1,35 @@
-import { NextRequest, NextResponse } from 'next/server'
-export const runtime = 'edge';
-
-import { createDB } from '@/lib/db'
-import { TestResultService } from '@/lib/db/queries'
+import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const ip = searchParams.get('ip')
-    if (!ip) {
-      return NextResponse.json({ error: 'IPå‚æ•°ç¼ºå¤±' }, { status: 400 })
+    const sessionId = searchParams.get("sessionId")
+    const ip = searchParams.get("ip")
+
+    if (!sessionId && !ip) {
+      return NextResponse.json({ error: "sessionId»òIP²ÎÊıÈ±Ê§" }, { status: 400 })
     }
 
-    const d1 = (process.env as any).DB
-    if (!d1) {
-      return NextResponse.json({ error: 'D1 æ•°æ®åº“æœªé…ç½®' }, { status: 500 })
+    let result = null
+    if (sessionId) {
+      result = await prisma.testResult.findFirst({
+        where: {
+          sessionId
+        }
+      })
+    } else if (ip) {
+      result = await prisma.testResult.findFirst({
+        where: {
+          ipAddress: ip
+        },
+        orderBy: { createdAt: "desc" }
+      })
     }
-    const db = createDB(d1)
-    const testResultService = new TestResultService(db)
 
-    // ç”¨ D1 æŸ¥è¯¢ç»“æœ
-    const result = await testResultService.getResultByIp(ip)
-    return NextResponse.json({ result: result || null })
+    return NextResponse.json({ result })
   } catch (error) {
+    console.error("»ñÈ¡½á¹ûÊ§°Ü:", error)
     return NextResponse.json({ result: null })
   }
-} 
+}
