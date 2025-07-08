@@ -2,7 +2,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import Footer from "@/components/Footer"
 
 const personalityTypes = [
   {
@@ -301,7 +300,6 @@ export default function TypesPage() {
           </Card>
         </div>
       </div>
-      <Footer />
     </div>
   )
 }

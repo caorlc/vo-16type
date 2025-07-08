@@ -64,9 +64,15 @@ export default function ResultPage() {
         if (!parsed.mbtiType && parsed.type) {
           parsed.mbtiType = parsed.type
         }
-        setResult(parsed)
-        setLoading(false)
-        return
+        // 检查_ts时间戳，48小时内有效
+        if (parsed._ts && Date.now() - parsed._ts < 48 * 3600 * 1000) {
+          setResult(parsed)
+          setLoading(false)
+          return
+        } else {
+          // 超时或无_ts字段，清理缓存
+          localStorage.removeItem(`16type_result_${sessionId}`)
+        }
       }
       
       // 如果localStorage没有，尝试从服务器获取
@@ -80,8 +86,8 @@ export default function ResultPage() {
         }
         if (serverResult) {
           setResult(serverResult)
-          // 保存到localStorage
-          localStorage.setItem(`16type_result_${sessionId}`, JSON.stringify(serverResult))
+          // 保存到localStorage，带_ts时间戳
+          localStorage.setItem(`16type_result_${sessionId}`, JSON.stringify({ ...serverResult, _ts: Date.now() }))
           setLoading(false)
         } else {
           router.push("/test")
@@ -287,7 +293,7 @@ export default function ResultPage() {
                     <h3 className="font-semibold mb-2 text-lg">なぜこの問題を起こるか</h3>
                     <PremiumMask
                       title="今すぐロックを解除"
-                      desc="フルレポートを取得して、あなたの性格タイプが直面しやすい課題の根本原因を詳しく解説します。自分の行動パターンを理解することで、問題の予防が可能になります"
+                      desc="フルレポートを取得して、あなたの性格タイプが直面しやすい課題を理解することで、問題の予防が可能になります"
                       buttonText="すべての結果のロックを解除"
                       onUnlockClick={handleUnlockClick}
                       unlocked={premiumUnlocked}

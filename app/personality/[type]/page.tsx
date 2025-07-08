@@ -22,7 +22,6 @@ import {
   BookOpen,
   Award,
 } from "lucide-react"
-import Footer from "@/components/Footer"
 
 const personalityData = {
   intj: {
@@ -581,7 +580,6 @@ export default function PersonalityPage() {
           </Card>
         </div>
       </div>
-      <Footer />
     </div>
   )
 }

@@ -4,11 +4,12 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MicrosoftClarity from "@/components/MicrosoftClarity";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: '16タイプ性格診断 | 日本人のためのMBTI診断テスト',
-  description: '世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。科学的根拠に基づいたMBTI診断で、16の性格タイプからあなたにぴったりのタイプを特定します。',
-  keywords: '16タイプ,16タイプ性格診断,MBTI,性格診断,性格テスト,日本人,カール・ユング,心理テスト,自己分析,キャリア診断',
+  title: '16タイプ性格診断 | 日本人のための16タイプ性格診断テスト',
+  description: '世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。科学的根拠に基づいた16タイプ性格診断で、16の性格タイプからあなたにぴったりのタイプを特定します。',
+  keywords: '',
   authors: [{ name: '16タイプ性格診断' }],
   creator: '16タイプ性格診断',
   publisher: '16タイプ性格診断',
@@ -17,14 +18,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://your-domain.com'),
+  metadataBase: new URL('https://www.my16type.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: '16タイプ性格診断 | 日本人のためのMBTI診断テスト',
-    description: '世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。科学的根拠に基づいたMBTI診断で、16の性格タイプからあなたにぴったりのタイプを特定します。',
-    url: 'https://your-domain.com',
+    title: '16タイプ性格診断 | 日本人のための16タイプ性格診断テスト',
+    description: '世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。科学的根拠に基づいた16タイプ性格診断で、16の性格タイプからあなたにぴったりのタイプを特定します。',
+    url: 'https://www.my16type.com',
     siteName: '16タイプ性格診断',
     locale: 'ja_JP',
     type: 'website',
@@ -33,13 +34,13 @@ export const metadata: Metadata = {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: '16タイプ性格診断 - 日本人のためのMBTI診断テスト',
+        alt: '16タイプ性格診断 - 日本人のための16タイプ性格診断テスト',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '16タイプ性格診断 | 日本人のためのMBTI診断テスト',
+    title: '16タイプ性格診断 | 日本人のための16タイプ性格診断テスト',
     description: '世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。',
     images: ['/images/twitter-image.jpg'],
   },
@@ -81,6 +82,7 @@ export default function RootLayout({
         <MicrosoftClarity />
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   )

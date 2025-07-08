@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge"
 import { Brain, Users, Target, BookOpen } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import Footer from "@/components/Footer"
 
 const mbtiDimensions = [
   {
@@ -60,7 +59,7 @@ export default function AboutPage() {
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">16タイプ性格診断とは？</h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              世界で最も信頼されているMBTI性格を診断で、あなたの隠れた才能と可能性を見つけてください。
+              世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を見つけてください。
               <br />
             </p>
           </div>
@@ -234,7 +233,6 @@ export default function AboutPage() {
           </Card>
         </div>
       </div>
-      <Footer />
     </div>
   )
 }
