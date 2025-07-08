@@ -203,7 +203,7 @@ export default function TestPage() {
               <ChevronLeft className="w-4 h-4 mr-2" />
               前の質問
             </Button>
-
+            <div className="flex-1"></div>
             {isLastQuestion ? (
               <Button
                 onClick={handleSubmit}
@@ -218,9 +218,6 @@ export default function TestPage() {
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             )}
-            <Button onClick={handleSkip} variant="outline" className="ml-4">
-              跳过
-            </Button>
           </div>
         </div>
       </div>

@@ -10,11 +10,14 @@ const polar = new Polar({
 export async function POST(request: NextRequest) {
   try {
     const { productId, sessionId } = await request.json();
+    const baseSuccessUrl = process.env.POLAR_SUCCESS_URL ?? "";
+    const successUrl = `${baseSuccessUrl}/${sessionId}?pay=1`;
 
     // 创建 Polar checkout
     const checkout = await polar.checkouts.create({
       products: [productId],
-      metadata: { sessionId }
+      metadata: { sessionId },
+      successUrl: successUrl
     });
 
     // 返回 checkout 跳转链接
