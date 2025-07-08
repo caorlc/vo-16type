@@ -38,7 +38,7 @@ export default function ResultPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          productId: "d19e1a8d-a57f-470e-b851-562bf7d1d13e",
+          productId: "3eab1b34-0687-4af9-a601-e283d4e5a550",
           sessionId,
         }),
       })
