@@ -54,6 +54,16 @@ export default function ResultPage() {
     setLoadingPay(false)
   }
 
+  const handleReset = () => {
+    // 清除 sessionId 和结果
+    if (sessionId) {
+      localStorage.removeItem('16type_sessionId');
+      localStorage.removeItem(`16type_result_${sessionId}`);
+      localStorage.removeItem(`16type_premium_${sessionId}`);
+    }
+    router.push('/test');
+  }
+
   useEffect(() => {
     const loadResult = async () => {
       // 先尝试从localStorage加载

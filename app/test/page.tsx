@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -11,8 +11,17 @@ import { questions, calcMBTI } from "@/lib/questions-ja"
 export default function TestPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<Record<number, "A" | "B">>({})
-  const [sessionId] = useState(() => Math.random().toString(36).substr(2, 9))
+  const [sessionId, setSessionId] = useState<string | null>(null)
   const router = useRouter()
+
+  useEffect(() => {
+    let sid = localStorage.getItem('16type_sessionId');
+    if (!sid) {
+      sid = Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('16type_sessionId', sid);
+    }
+    setSessionId(sid);
+  }, []);
 
   const progress = ((currentQuestion + 1) / questions.length) * 100
 
@@ -48,43 +57,40 @@ export default function TestPage() {
     }
     // 计算结果
     const result = calcMBTI(answers)
-    // 先清除旧的结果
-    const keys = Object.keys(localStorage)
-    keys.forEach(key => {
-      if (key.startsWith('16type_result_')) {
-        localStorage.removeItem(key)
-      }
-    })
-    // 先本地存储
-    localStorage.setItem(
-      `16type_result_${sessionId}`,
-      JSON.stringify({
-        type: result.type,
-        detail: result.detail,
-        timestamp: new Date().toISOString(),
-      }),
-    )
-    // 立即跳转
-    router.push(`/result/${sessionId}`)
-    // 异步保存到数据库
-    try {
-      const ipResponse = await fetch('/api/get-ip')
-      const { ip } = await ipResponse.json()
-      await fetch('/api/save-result', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          ip, 
-          sessionId,
-          result: {
-            type: result.type,
-            detail: result.detail,
-            timestamp: new Date().toISOString(),
-          }
+    // 只清除当前 sessionId 的结果
+    if (sessionId) {
+      localStorage.removeItem(`16type_result_${sessionId}`)
+      // 本地存储
+      localStorage.setItem(
+        `16type_result_${sessionId}`,
+        JSON.stringify({
+          type: result.type,
+          detail: result.detail,
+          timestamp: new Date().toISOString(),
+        }),
+      )
+      // 跳转
+      router.push(`/result/${sessionId}`)
+      // 异步保存到数据库
+      try {
+        const ipResponse = await fetch('/api/get-ip')
+        const { ip } = await ipResponse.json()
+        await fetch('/api/save-result', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            ip, 
+            sessionId,
+            result: {
+              type: result.type,
+              detail: result.detail,
+              timestamp: new Date().toISOString(),
+            }
+          })
         })
-      })
-    } catch (error) {
-      console.error('保存失败:', error)
+      } catch (error) {
+        console.error('保存失败:', error)
+      }
     }
   }
 
@@ -94,43 +100,40 @@ export default function TestPage() {
       randomAnswers[i] = Math.random() > 0.5 ? "A" : "B"
     }
     const result = calcMBTI(randomAnswers)
-    // 先清除旧的结果
-    const keys = Object.keys(localStorage)
-    keys.forEach(key => {
-      if (key.startsWith('16type_result_')) {
-        localStorage.removeItem(key)
-      }
-    })
-    // 先本地存储
-    localStorage.setItem(
-      `16type_result_${sessionId}`,
-      JSON.stringify({
-        type: result.type,
-        detail: result.detail,
-        timestamp: new Date().toISOString(),
-      }),
-    )
-    // 立即跳转
-    router.push(`/result/${sessionId}`)
-    // 异步保存到数据库
-    try {
-      const ipResponse = await fetch('/api/get-ip')
-      const { ip } = await ipResponse.json()
-      await fetch('/api/save-result', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          ip, 
-          sessionId,
-          result: {
-            type: result.type,
-            detail: result.detail,
-            timestamp: new Date().toISOString(),
-          }
+    // 只清除当前 sessionId 的结果
+    if (sessionId) {
+      localStorage.removeItem(`16type_result_${sessionId}`)
+      // 本地存储
+      localStorage.setItem(
+        `16type_result_${sessionId}`,
+        JSON.stringify({
+          type: result.type,
+          detail: result.detail,
+          timestamp: new Date().toISOString(),
+        }),
+      )
+      // 跳转
+      router.push(`/result/${sessionId}`)
+      // 异步保存到数据库
+      try {
+        const ipResponse = await fetch('/api/get-ip')
+        const { ip } = await ipResponse.json()
+        await fetch('/api/save-result', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            ip, 
+            sessionId,
+            result: {
+              type: result.type,
+              detail: result.detail,
+              timestamp: new Date().toISOString(),
+            }
+          })
         })
-      })
-    } catch (error) {
-      console.error('保存失败:', error)
+      } catch (error) {
+        console.error('保存失败:', error)
+      }
     }
   }
 

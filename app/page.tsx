@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Users, Brain, Target, Star } from "lucide-react"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
-import Footer from "@/components/Footer"
 import StructuredData from "./structured-data"
 // @ts-ignore
 import homepageContent from "../homepage-content.json"
@@ -203,9 +202,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <Footer />
     </main>
     </>
   )
