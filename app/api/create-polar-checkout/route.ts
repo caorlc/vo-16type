@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 const polar = new Polar({
   accessToken: process.env.POLAR_ACCESS_TOKEN ?? "",
-  server: "sandbox", // 生产环境用 production
+  server: "production", // 生产环境用 production
 });
 
 export async function POST(request: NextRequest) {

@@ -8,5 +8,5 @@ export const GET = CustomerPortal({
     // 这里只做演示，返回空字符串
     return "";
   },
-  server: "sandbox", // 生产环境改为 'production'
+  server: "production", // 生产环境改为 'production'
 }); 
