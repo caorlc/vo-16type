@@ -44,7 +44,7 @@ export default function ResultPage() {
       })
       const data = await res.json()
       if (data.url) {
-        window.open(data.url, "_blank")
+        window.location.href = data.url
       } else {
         alert("获取支付链接失败")
       }
