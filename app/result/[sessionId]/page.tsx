@@ -38,7 +38,7 @@ export default function ResultPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          productId: "3eab1b34-0687-4af9-a601-e283d4e5a550",
+          productId: "d49146b7-56da-49ed-95fd-8dfc8c036fbd",
           sessionId,
         }),
       })
@@ -251,7 +251,7 @@ export default function ResultPage() {
                 <CardContent>
                   <PremiumMask
                     title="今すぐロックを解除"
-                    desc="このセクションでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。続きはプレミアムでご覧いただけます。"
+                    desc="フルレポートを取得して、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを把握しましょう。"
                     buttonText="すべての結果のロックを解除"
                     onUnlockClick={handleUnlockClick}
                     unlocked={premiumUnlocked}
@@ -287,7 +287,7 @@ export default function ResultPage() {
                     <h3 className="font-semibold mb-2 text-lg">なぜこの問題を起こるか</h3>
                     <PremiumMask
                       title="今すぐロックを解除"
-                      desc="このセクションでは、あなたの性格タイプが直面しやすい課題の根本原因を詳しく解説しています。詳細を読むにはプレミアム登録が必要です。"
+                      desc="フルレポートを取得して、あなたの性格タイプが直面しやすい課題の根本原因を詳しく解説します。自分の行動パターンを理解することで、問題の予防が可能になります"
                       buttonText="すべての結果のロックを解除"
                       onUnlockClick={handleUnlockClick}
                       unlocked={premiumUnlocked}
@@ -299,7 +299,7 @@ export default function ResultPage() {
                     <h3 className="font-semibold mb-2 text-lg">解決方法</h3>
                     <PremiumMask
                       title="今すぐロックを解除"
-                      desc="ここでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。続きはプレミアムでご覧いただけます。"
+                      desc="ここでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。理論だけでなく、日常生活で即座に実践できる実用的なアドバイスを学べます。"
                       buttonText="すべての結果のロックを解除"
                       onUnlockClick={handleUnlockClick}
                       unlocked={premiumUnlocked}
@@ -321,9 +321,9 @@ export default function ResultPage() {
                 </CardHeader>
                 <CardContent>
                   <PremiumMask
-                    title="10の成功ルールをアンロック"
-                    desc="あなたの性格に合わせた成功の秘訣を今すぐチェック！"
-                    buttonText="10のルールをアンロック"
+                    title="すべての結果のロックを解除"
+                    desc="あなたの性格に合わせた成功の秘訣をチェック！"
+                    buttonText="すべての結果のロックを解除"
                     onUnlockClick={handleUnlockClick}
                     unlocked={premiumUnlocked}
                   >

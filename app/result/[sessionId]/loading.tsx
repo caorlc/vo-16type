@@ -1,5 +1,5 @@
 export default function Loading() {
-  return <div>加载中...</div>
+  return <div>読み込み中...</div>
 }
 
 export const runtime = 'edge';

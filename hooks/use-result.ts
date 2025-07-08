@@ -17,37 +17,47 @@ export function useResult() {
         // 先尝试从localStorage获取
         const keys = Object.keys(localStorage)
         const resultKeys = keys.filter(key => key.startsWith('16type_result_'))
-        
+        const now = Date.now();
+        const EXPIRE_MS = 48 * 60 * 60 * 1000; // 48小时
+        let validResult = null;
+        let validKey = null;
         if (resultKeys.length > 0) {
           // 获取最新的结果
           const latestKey = resultKeys.sort((a, b) => {
             const aData = localStorage.getItem(a)
             const bData = localStorage.getItem(b)
             if (!aData || !bData) return 0
-            
             const aTime = JSON.parse(aData).timestamp
             const bTime = JSON.parse(bData).timestamp
             return new Date(bTime).getTime() - new Date(aTime).getTime()
           })[0]
-          
           const resultData = localStorage.getItem(latestKey)
           if (resultData) {
             const parsed = JSON.parse(resultData)
-            if (!parsed.mbtiType && parsed.type) {
-              parsed.mbtiType = parsed.type
-              localStorage.setItem(latestKey, JSON.stringify(parsed))
+            const ts = new Date(parsed.timestamp).getTime();
+            if (now - ts <= EXPIRE_MS) {
+              // 未过期
+              if (!parsed.mbtiType && parsed.type) {
+                parsed.mbtiType = parsed.type
+                localStorage.setItem(latestKey, JSON.stringify(parsed))
+              }
+              validResult = parsed;
+              validKey = latestKey;
+            } else {
+              // 过期，清除
+              localStorage.removeItem(latestKey);
             }
-            setResult(parsed)
           }
+        }
+        if (validResult) {
+          setResult(validResult)
         } else {
           // 如果localStorage没有，尝试从服务器获取
           try {
             const ipResponse = await fetch('/api/get-ip')
             const { ip } = await ipResponse.json()
-            
             const resultResponse = await fetch(`/api/get-result?ip=${ip}`)
             const { result: serverResult } = await resultResponse.json()
-            
             if (serverResult) {
               if (!serverResult.mbtiType && serverResult.type) {
                 serverResult.mbtiType = serverResult.type
@@ -64,7 +74,6 @@ export function useResult() {
         setLoading(false)
       }
     }
-    
     loadResult()
   }, [])
 

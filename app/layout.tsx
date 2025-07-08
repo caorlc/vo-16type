@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Link from "next/link";
 import Header from "@/components/Header";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import MicrosoftClarity from "@/components/MicrosoftClarity";
 
 export const metadata: Metadata = {
   title: '16タイプ性格診断 | 日本人のためのMBTI診断テスト',
@@ -75,6 +77,8 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="16タイプ診断" />
       </head>
       <body>
+        <GoogleAnalytics />
+        <MicrosoftClarity />
         <Header />
         {children}
       </body>
