@@ -29,8 +29,30 @@ export default function ResultPage() {
   const [loading, setLoading] = useState(true)
   const sessionId = params.sessionId as string
   const [premiumUnlocked, setPremiumUnlocked] = useState(false)
+  const [loadingPay, setLoadingPay] = useState(false)
 
-  const paymentLink = `https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_wtm1MOtOoSnHCj1UUospQhXgCVD9VSpsb0AGf3MQ4WP/redirect?metadata[sessionId]=${sessionId}`;
+  const handleUnlockClick = async () => {
+    setLoadingPay(true)
+    try {
+      const res = await fetch("/api/create-polar-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: "d19e1a8d-a57f-470e-b851-562bf7d1d13e",
+          sessionId,
+        }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        window.open(data.url, "_blank")
+      } else {
+        alert("获取支付链接失败")
+      }
+    } catch (e) {
+      alert("支付请求失败")
+    }
+    setLoadingPay(false)
+  }
 
   useEffect(() => {
     const loadResult = async () => {
@@ -231,7 +253,7 @@ export default function ResultPage() {
                     title="今すぐロックを解除"
                     desc="このセクションでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。続きはプレミアムでご覧いただけます。"
                     buttonText="すべての結果のロックを解除"
-                    onUnlockClick={() => window.open(paymentLink, "_blank")}
+                    onUnlockClick={handleUnlockClick}
                     unlocked={premiumUnlocked}
                   >
                     <p>{typeData.strengthsDevelopment.description}</p>
@@ -267,7 +289,7 @@ export default function ResultPage() {
                       title="今すぐロックを解除"
                       desc="このセクションでは、あなたの性格タイプが直面しやすい課題の根本原因を詳しく解説しています。詳細を読むにはプレミアム登録が必要です。"
                       buttonText="すべての結果のロックを解除"
-                      onUnlockClick={() => window.open(paymentLink, "_blank")}
+                      onUnlockClick={handleUnlockClick}
                       unlocked={premiumUnlocked}
                     >
                       <div>{typeData.potentialProblems.causes}</div>
@@ -279,7 +301,7 @@ export default function ResultPage() {
                       title="今すぐロックを解除"
                       desc="ここでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。続きはプレミアムでご覧いただけます。"
                       buttonText="すべての結果のロックを解除"
-                      onUnlockClick={() => window.open(paymentLink, "_blank")}
+                      onUnlockClick={handleUnlockClick}
                       unlocked={premiumUnlocked}
                     >
                       <div>{typeData.potentialProblems.solutions}</div>
@@ -302,7 +324,7 @@ export default function ResultPage() {
                     title="10の成功ルールをアンロック"
                     desc="あなたの性格に合わせた成功の秘訣を今すぐチェック！"
                     buttonText="10のルールをアンロック"
-                    onUnlockClick={() => window.open(paymentLink, "_blank")}
+                    onUnlockClick={handleUnlockClick}
                     unlocked={premiumUnlocked}
                   >
                     <div>
@@ -335,7 +357,7 @@ export default function ResultPage() {
               size="lg"
               variant="secondary"
               className="bg-white text-orange-500 hover:bg-gray-100 px-8 py-4 text-lg font-bold rounded-full shadow-none"
-              onClick={() => window.open(paymentLink, "_blank")}
+              onClick={handleUnlockClick}
             >
               すべての結果のロックを解除（$2.9）
             </Button>
