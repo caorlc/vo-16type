@@ -1,62 +1,83 @@
-import { Webhooks } from "@polar-sh/nextjs";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import crypto from "crypto";
 
-export const POST = Webhooks({
-  webhookSecret: process.env.POLAR_WEBHOOK_SECRET!,
-  onPayload: async (event) => {
-    try {
-      const eventType = event.type;
-      const eventData = event.data;
-      console.log("eventType:", eventType);
-      console.log("eventData:", JSON.stringify(eventData));
+export async function POST(request: NextRequest) {
+  console.log("=== Polar Webhook 处理开始 ===");
 
-      switch (eventType) {
-        case "order.paid": {
-          const sessionId = eventData?.metadata?.sessionId;
-          const orderId = eventData?.id;
-          const amount = eventData?.total_amount ?? eventData?.amount ?? 0;
-          const currency = eventData?.currency || "USD";
-          const status = eventData?.status || "paid";
-          console.log("order.paid sessionId:", sessionId, "orderId:", orderId, "amount:", amount);
+  try {
+    const body = await request.text();
+    console.log("Webhook payload:", body);
+    const headers = Object.fromEntries(request.headers.entries());
+    const signature = headers["polar-signature"];
 
-          if (sessionId && orderId) {
-            // 解锁 premium
-            await prisma.testResult.updateMany({
-              where: { sessionId },
-              data: { isPremiumUnlocked: true },
-            });
+    // 签名校验
+    if (process.env.POLAR_WEBHOOK_SECRET && signature) {
+      const expectedSignature = crypto
+        .createHmac("sha256", process.env.POLAR_WEBHOOK_SECRET)
+        .update(body)
+        .digest("hex");
 
-            // 写入订单
-            await prisma.order.create({
-              data: {
-                sessionId,
-                orderId,
-                amount,
-                currency,
-                status,
-              }
-            });
-
-            console.log(`Premium unlocked and order saved for sessionId: ${sessionId}, orderId: ${orderId}`);
-          } else if (sessionId) {
-            // 只解锁 premium
-            await prisma.testResult.updateMany({
-              where: { sessionId },
-              data: { isPremiumUnlocked: true },
-            });
-            console.log(`Premium unlocked for sessionId: ${sessionId}, but no orderId found.`);
-          } else {
-            console.log("No sessionId found in payload.");
-          }
-          break;
-        }
-        // 可扩展其他事件类型
-        default:
-          console.log("未处理的事件类型:", eventType);
+      if (signature !== expectedSignature) {
+        console.error("签名验证失败");
+        return NextResponse.json({ error: "Invalid signature" }, { status: 403 });
       }
-    } catch (error) {
-      console.error("Webhook 处理错误:", error);
-      // Webhooks 封装会自动返回 200/500，无需手动返回
     }
-  },
-}); 
+
+    // 解析事件
+    const event = JSON.parse(body);
+    const eventType = event.type;
+    const eventData = event.data;
+    console.log("eventType:", eventType);
+
+    switch (eventType) {
+      case "order.paid": {
+        const sessionId = eventData?.metadata?.sessionId;
+        const orderId = eventData?.id;
+        const amount = eventData?.total_amount;
+        const currency = eventData?.currency || "USD";
+        const status = eventData?.status || "paid";
+        console.log("order.paid sessionId:", sessionId, "orderId:", orderId);
+      
+        if (sessionId && orderId) {
+          // 解锁 premium
+          await prisma.testResult.updateMany({
+            where: { sessionId },
+            data: { isPremiumUnlocked: true },
+          });
+      
+          // 写入订单
+          await prisma.order.create({
+            data: {
+              sessionId,
+              orderId,
+              amount,
+              currency,
+              status,
+            }
+          });
+      
+          console.log(`Premium unlocked and order saved for sessionId: ${sessionId}, orderId: ${orderId}`);
+        } else if (sessionId) {
+          // 只解锁 premium
+          await prisma.testResult.updateMany({
+            where: { sessionId },
+            data: { isPremiumUnlocked: true },
+          });
+          console.log(`Premium unlocked for sessionId: ${sessionId}, but no orderId found.`);
+        } else {
+          console.log("No sessionId found in payload.");
+        }
+        break;
+      }
+      // 可扩展其他事件类型
+      default:
+        console.log("未处理的事件类型:", eventType);
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Webhook 处理错误:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
