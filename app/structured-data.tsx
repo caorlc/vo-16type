@@ -4,10 +4,10 @@ export default function StructuredData() {
     "@type": "WebSite",
     "name": "16タイプ性格診断",
     "description": "世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。科学的根拠に基づいたMBTI診断で、16の性格タイプからあなたにぴったりのタイプを特定します。",
-    "url": "https://your-domain.com",
+    "url": "https://www.my16type.com",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://your-domain.com/search?q={search_term_string}",
+      "target": "https://www.my16type.com/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     },
     "sameAs": [
@@ -67,8 +67,8 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "16タイプ性格診断",
-    "url": "https://your-domain.com",
-    "logo": "https://your-domain.com/logo.png",
+    "url": "https://www.my16type.com",
+    "logo": "https://www.my16type.com/logo.png",
     "description": "日本人のための16タイプ性格診断サービス",
     "contactPoint": {
       "@type": "ContactPoint",
