@@ -1,3 +1,3 @@
-export const runtime = 'edge';
-
-// ... existing code ... 
+export default function PersonalityTypeLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+} 

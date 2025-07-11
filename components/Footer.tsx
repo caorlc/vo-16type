@@ -23,7 +23,7 @@ export default function Footer() {
                 <Link href="/about" className="hover:text-white">16タイプ性格診断とは</Link>
               </li>
               <li>
-                <Link href="/types" className="hover:text-white">16タイプについて</Link>
+                <Link href="/personality" className="hover:text-white">16タイプについて</Link>
               </li>
             </ul>
           </div>

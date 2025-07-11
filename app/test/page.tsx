@@ -23,6 +23,20 @@ export default function TestPage() {
     setSessionId(sid);
   }, []);
 
+  // 添加键盘快捷键监听
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      // Ctrl + Shift + R 快速随机跳转
+      if (event.ctrlKey && event.shiftKey && event.key === 'R') {
+        event.preventDefault()
+        handleSkip()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [sessionId])
+
   const progress = ((currentQuestion + 1) / questions.length) * 100
 
   const handleAnswer = (answer: "A" | "B") => {

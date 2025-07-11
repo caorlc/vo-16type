@@ -1,6 +1,6 @@
 import { Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import React from "react"
+import React, { useEffect, useState } from "react"
 
 interface PremiumMaskProps {
   children: React.ReactNode
@@ -12,7 +12,23 @@ interface PremiumMaskProps {
 }
 
 export default function PremiumMask({ children, title, desc, buttonText, onUnlockClick, unlocked }: PremiumMaskProps) {
-  if (unlocked) {
+  // 本地开发环境下的调试开关
+  const [devUnlocked, setDevUnlocked] = useState(false);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "development") return;
+    const handler = (e: KeyboardEvent) => {
+      // Ctrl+P 解锁
+      if (e.ctrlKey && e.key.toLowerCase() === "p") {
+        setDevUnlocked(true);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  // 本地按 Ctrl+P 后强制解锁，线上环境不受影响
+  if ((process.env.NODE_ENV === "development" && devUnlocked) || unlocked) {
     return <>{children}</>;
   }
   return (

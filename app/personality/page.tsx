@@ -194,7 +194,7 @@ const categories = [
   { name: "探検家", description: "柔軟で自発的な行動派", types: ["ISTP", "ISFP", "ESTP", "ESFP"] },
 ]
 
-export default function TypesPage() {
+export default function PersonalityPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
       <div className="container mx-auto px-4 py-12">
@@ -237,47 +237,48 @@ export default function TypesPage() {
                   {personalityTypes
                     .filter((type) => category.types.includes(type.type))
                     .map((type) => (
-                      <Card
-                        key={type.type}
-                        className={`${type.bgColor} border-0 shadow-lg hover:shadow-xl transition-shadow`}
-                      >
-                        <CardHeader>
-                          <div className="flex items-center justify-between mb-4">
-                            <div className={`w-16 h-16 ${type.color} rounded-full flex items-center justify-center`}>
-                              <span className="text-white font-bold text-lg">{type.type}</span>
+                      <Link key={type.type} href={`/personality/${type.type.toLowerCase()}`} className="block hover:scale-[1.03] transition-transform">
+                        <Card
+                          className={`${type.bgColor} border-0 shadow-lg hover:shadow-xl transition-shadow`}
+                        >
+                          <CardHeader>
+                            <div className="flex items-center justify-between mb-4">
+                              <div className={`w-16 h-16 ${type.color} rounded-full flex items-center justify-center`}>
+                                <span className="text-white font-bold text-lg">{type.type}</span>
+                              </div>
+                              <Badge className={type.textColor} variant="secondary">
+                                {type.category}
+                              </Badge>
                             </div>
-                            <Badge className={type.textColor} variant="secondary">
-                              {type.category}
-                            </Badge>
-                          </div>
-                          <CardTitle className="text-2xl">{type.name}</CardTitle>
-                          <CardDescription className="text-base leading-relaxed">{type.description}</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                          <div>
-                            <h4 className="font-semibold mb-3">主な特徴</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {type.traits.map((trait, index) => (
-                                <Badge key={index} variant="outline" className="text-xs">
-                                  {trait}
-                                </Badge>
-                              ))}
+                            <CardTitle className="text-2xl">{type.name}</CardTitle>
+                            <CardDescription className="text-base leading-relaxed">{type.description}</CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-6">
+                            <div>
+                              <h4 className="font-semibold mb-3">主な特徴</h4>
+                              <div className="flex flex-wrap gap-2">
+                                {type.traits.map((trait, index) => (
+                                  <Badge key={index} variant="outline" className="text-xs">
+                                    {trait}
+                                  </Badge>
+                                ))}
+                              </div>
                             </div>
-                          </div>
 
-                          <div>
-                            <h4 className="font-semibold mb-3">適職</h4>
-                            <ul className="space-y-1">
-                              {type.careers.slice(0, 3).map((career, index) => (
-                                <li key={index} className="flex items-center text-sm">
-                                  <div className={`w-2 h-2 ${type.color} rounded-full mr-3`} />
-                                  {career}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </CardContent>
-                      </Card>
+                            <div>
+                              <h4 className="font-semibold mb-3">適職</h4>
+                              <ul className="space-y-1">
+                                {type.careers.slice(0, 3).map((career, index) => (
+                                  <li key={index} className="flex items-center text-sm">
+                                    <div className={`w-2 h-2 ${type.color} rounded-full mr-3`} />
+                                    {career}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Link>
                     ))}
                 </div>
               </div>
@@ -302,4 +303,4 @@ export default function TypesPage() {
       </div>
     </div>
   )
-}
+} 

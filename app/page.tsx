@@ -70,31 +70,8 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6" role="list" aria-label="16タイプの性格タイプ一覧">
             {homepageContent.typesSection.types.map((type: any) => (
               <article key={type.id} className="card" role="listitem">
-                {type.id === 'INTJ' ? (
-                  <Link href={`/personality/${type.id.toLowerCase()}`} className="block group focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-xl">
-                    <Card className="group-hover:shadow-lg transition-shadow">
-                      <CardHeader className="pb-2 flex flex-col items-center">
-                        <div className="flex items-center justify-between">
-                          <Badge className={type.color}>{type.id}</Badge>
-                        </div>
-                        <CardTitle className="text-lg">{type.name}</CardTitle>
-                        <CardDescription className="text-sm">{type.description}</CardDescription>
-                        <div className="h-20 w-full flex items-center justify-center">
-                          <Image
-                            src={`/images/${type.id.toLowerCase()}.png`}
-                            alt={`${type.id}（${type.name}）の16タイプ性格診断結果画像`}
-                            width={72}
-                            height={72}
-                            className="bg-white p-2 rounded-full object-contain"
-                            style={{objectPosition: 'center'}}
-                            priority={type.id === 'INTJ' || type.id === 'INFP' || type.id === 'ENFJ' || type.id === 'ENTP'}
-                          />
-                        </div>
-                      </CardHeader>
-                    </Card>
-                  </Link>
-                ) : (
-                  <Card>
+                <Link href={`/personality/${type.id.toLowerCase()}`} className="block group focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-xl">
+                  <Card className="group-hover:shadow-lg transition-shadow">
                     <CardHeader className="pb-2 flex flex-col items-center">
                       <div className="flex items-center justify-between">
                         <Badge className={type.color}>{type.id}</Badge>
@@ -114,13 +91,13 @@ export default function HomePage() {
                       </div>
                     </CardHeader>
                   </Card>
-                )}
+                </Link>
               </article>
             ))}
           </div>
           <div className="text-center mt-12">
             <Button variant="outline" size="lg">
-              <Link href="/types">{homepageContent.typesSection.viewAllButton}</Link>
+              <Link href="/personality">{homepageContent.typesSection.viewAllButton}</Link>
             </Button>
           </div>
         </div>

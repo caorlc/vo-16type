@@ -14,7 +14,6 @@ Disallow: /api/
 
 # Allow important pages
 Allow: /test
-Allow: /types
 Allow: /personality/
 Allow: /about
 Allow: /privacy

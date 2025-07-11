@@ -12,7 +12,7 @@ import Link from "next/link"
 import PremiumMask from "@/components/PremiumMask"
 
 // 导入人格类型数据
-import personalityData from '@/data/personality-results.json'
+import resultData from '@/data/result.json'
 
 interface MBTIResult {
   mbtiType: string
@@ -96,8 +96,22 @@ export default function ResultPage() {
         }
         if (serverResult) {
           setResult(serverResult)
-          // 保存到localStorage，带_ts时间戳
-          localStorage.setItem(`16type_result_${sessionId}`, JSON.stringify({ ...serverResult, _ts: Date.now() }))
+          // 保存到localStorage，带_ts时间戳，兼容保留本地detail
+          const local = localStorage.getItem(`16type_result_${sessionId}`);
+          let detail = undefined;
+          if (local) {
+            try {
+              detail = JSON.parse(local).detail;
+            } catch {}
+          }
+          localStorage.setItem(
+            `16type_result_${sessionId}`,
+            JSON.stringify({
+              ...serverResult,
+              ...(detail && !serverResult.detail ? { detail } : {}),
+              _ts: Date.now(),
+            })
+          );
           setLoading(false)
         } else {
           router.push("/test")
@@ -134,8 +148,12 @@ export default function ResultPage() {
 
   // 获取对应的人格类型数据
   const mbtiType = result.mbtiType || ''
-  const typeData = personalityData[mbtiType.toLowerCase() as keyof typeof personalityData]
+  // 只从 resultData 里取类型对象
+  const typeData = (resultData as Record<string, any>)[mbtiType.toLowerCase()];
   console.log('result.mbtiType:', JSON.stringify(result.mbtiType));
+  console.log('typeData:', typeData);
+  console.log('potentialProblems:', typeData?.potentialProblems);
+  console.log('points:', typeData?.potentialProblems?.points);
   if (!mbtiType) {
     return <div>未找到类型</div>;
   }
@@ -169,7 +187,7 @@ export default function ResultPage() {
               <div className="text-5xl md:text-6xl font-bold mb-2 text-gray-900">{typeInfo.name}</div>
               <div className="text-3xl md:text-4xl font-bold text-gray-800">{result.mbtiType}</div>
               {typeData?.typeDescription && (
-                <p className="mt-6 text-lg text-gray-700 whitespace-pre-line">
+                <p className="mt-6 text-lg text-gray-700 whitespace-pre-line leading-loose">
                   {typeData.typeDescription}
                 </p>
               )}
@@ -181,36 +199,30 @@ export default function ResultPage() {
             />
           </div>
 
-          {/* 概述部分 */}
-          {typeData?.overview && (
+          {/* 性格特徴（合并title+描述+打钩列表） */}
+          {typeData && typeData.personalityTraits && 'overview' in typeData && (
             <Card className="mb-8 border-0 shadow-xl">
-              <CardHeader className="pb-8">
-                <CardDescription className="text-lg text-gray-700">
-                  {typeData.overview}
-                </CardDescription>
+              <CardHeader>
+                <CardTitle>性格特徴</CardTitle>
               </CardHeader>
+              <CardContent>
+                {/* 概述描述 */}
+                {typeData.overview && (
+                  <p className="text-lg text-gray-700 mb-4 whitespace-pre-line leading-loose">
+                    {typeData.overview && typeof typeData.overview === 'string' ? typeData.overview.replace(/\n/g, '\n') : typeData.overview}
+                  </p>
+                )}
+                {/* 打钩列表 */}
+                <ul className="space-y-1">
+                  {typeData.personalityTraits.map((trait: string, idx: number) => (
+                    <li key={idx} className="flex items-start text-base leading-snug">
+                      <span className="text-green-500 mr-2 mt-0.5">✔</span>
+                      <span>{trait}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
             </Card>
-          )}
-
-          {/* 性格特徴模块 */}
-          {typeData?.personalityTraits && (
-            <section className="mb-8">
-              <Card className="mb-4">
-                <CardHeader>
-                  <CardTitle>性格特徴</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-1">
-                    {typeData.personalityTraits.map((trait, idx) => (
-                      <li key={idx} className="flex items-start text-base leading-snug">
-                        <span className="text-green-500 mr-2 mt-0.5">✔</span>
-                        <span>{trait}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </section>
           )}
 
           {/* 人际关系模块 */}
@@ -221,11 +233,11 @@ export default function ResultPage() {
                   <CardTitle className="text-2xl">人間関係について</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="mb-4">{typeData.relationships.description}</p>
+                  <p className="mb-4 whitespace-pre-line leading-loose">{typeData.relationships.description}</p>
                   <div className="mb-4">
                     <h3 className="text-xl font-bold mb-1">{`${result.mbtiType.toUpperCase()}の強み`}</h3>
                     <ul className="list-none space-y-1">
-                      {typeData.relationships.strengths.map((strength, idx) => (
+                      {typeData.relationships.strengths.map((strength: string, idx: number) => (
                         <li key={idx}>🟢 {strength}</li>
                       ))}
                     </ul>
@@ -233,7 +245,7 @@ export default function ResultPage() {
                   <div>
                     <h3 className="text-xl font-bold mb-1">{`${result.mbtiType.toUpperCase()}の弱み`}</h3>
                     <ul className="list-none space-y-1">
-                      {typeData.relationships.weaknesses.map((weakness, idx) => (
+                      {typeData.relationships.weaknesses.map((weakness: string, idx: number) => (
                         <li key={idx}>🔴 {weakness}</li>
                       ))}
                     </ul>
@@ -251,7 +263,7 @@ export default function ResultPage() {
                   <CardTitle>{`${result.mbtiType.toUpperCase()}にとって成功とは何を意味するのでしょうか？`}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p>{typeData.success}</p>
+                  <p className="whitespace-pre-line leading-loose">{typeData.success}</p>
                 </CardContent>
               </Card>
             </section>
@@ -272,15 +284,19 @@ export default function ResultPage() {
                     onUnlockClick={handleUnlockClick}
                     unlocked={premiumUnlocked}
                   >
-                    <p>{typeData.strengthsDevelopment.description}</p>
+                    <p className="whitespace-pre-line leading-loose">{typeData.strengthsDevelopment.description}</p>
                     <ul className="list-disc pl-4 mt-2">
-                      {typeData.strengthsDevelopment.basicStrengths.map((strength, idx) => (
+                      {typeData.strengthsDevelopment.basicStrengths.map((strength: string, idx: number) => (
                         <li key={idx}>{strength}</li>
                       ))}
                     </ul>
-                    <p className="mt-2">内向的直観を発達させ、自分の認識の中に可能性を見ることができる程度まで発達した{result.mbtiType}は、これらの非常に特別な才能を享受するでしょう：</p>
+                    {/* 高级強み说明 */}
+                    <div className="my-4 p-4 bg-orange-50 border-l-4 border-orange-400 text-base">
+                      {typeData.strengthsDevelopment.advancedStrengthsNote}
+                    </div>
+                    <p className="mt-2">{typeData.strengthsDevelopment.overview2}</p>
                     <ul className="list-disc pl-4 mt-2">
-                      {typeData.strengthsDevelopment.advancedStrengths.map((strength, idx) => (
+                      {typeData.strengthsDevelopment.advancedStrengths.map((strength: string, idx: number) => (
                         <li key={idx}>{strength}</li>
                       ))}
                     </ul>
@@ -298,7 +314,14 @@ export default function ResultPage() {
                   <CardTitle>潜在的な問題</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p>{typeData.potentialProblems.description}</p>
+                  <p className="whitespace-pre-line leading-loose">{typeData.potentialProblems.description}</p>
+                  {typeData.potentialProblems.points && Array.isArray(typeData.potentialProblems.points) && (
+                    <ul className="list-disc pl-6 mb-4 mt-4">
+                      {typeData.potentialProblems.points.map((point: string, idx: number) => (
+                        <li key={idx} className="mb-1">{point}</li>
+                      ))}
+                    </ul>
+                  )}
                   <div className="relative mt-4">
                     <h3 className="font-semibold mb-2 text-lg">なぜこの問題を起こるか</h3>
                     <PremiumMask
@@ -308,7 +331,7 @@ export default function ResultPage() {
                       onUnlockClick={handleUnlockClick}
                       unlocked={premiumUnlocked}
                     >
-                      <div>{typeData.potentialProblems.causes}</div>
+                      <div className="whitespace-pre-line leading-loose">{typeData.potentialProblems.causes}</div>
                     </PremiumMask>
                   </div>
                   <div className="relative mt-4">
@@ -320,8 +343,40 @@ export default function ResultPage() {
                       onUnlockClick={handleUnlockClick}
                       unlocked={premiumUnlocked}
                     >
-                      <div>{typeData.potentialProblems.solutions}</div>
+                      <div className="whitespace-pre-line leading-loose">{typeData.potentialProblems.solutions}</div>
                     </PremiumMask>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+          )}
+
+          {/* 幸福の鍵模块 */}
+          {typeData?.happinessKeys && (
+            <section className="mb-8">
+              <Card className="mb-4">
+                <CardHeader>
+                  <CardTitle>{`${result.mbtiType.toUpperCase()}タイプとして、この世界で幸せに生きる鍵`}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="whitespace-pre-line leading-loose text-gray-700">
+                    {typeData.happinessKeys}
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+          )}
+
+          {/* 具体的アドバイス模块 */}
+          {typeData?.specificSuggestions && (
+            <section className="mb-8">
+              <Card className="mb-4">
+                <CardHeader>
+                  <CardTitle>具体的なアドバイス</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="whitespace-pre-line leading-loose text-gray-700">
+                    {typeData.specificSuggestions}
                   </div>
                 </CardContent>
               </Card>
@@ -344,7 +399,7 @@ export default function ResultPage() {
                     unlocked={premiumUnlocked}
                   >
                     <div>
-                      {typeData.successRules.map((rule, idx) => (
+                      {typeData.successRules.map((rule: string, idx: number) => (
                         <div key={idx}>
                           {idx + 1}. {rule}<br />
                         </div>

@@ -7,7 +7,7 @@ import React from "react";
 
 const navs = [
   { href: "/", label: "ホーム" },
-  { href: "/types", label: "16タイプ" },
+  { href: "/personality", label: "16タイプ" },
 ];
 
 export default function Header() {
@@ -53,7 +53,7 @@ export default function Header() {
           </nav>
         </div>
         <Button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md shadow" size="sm">
-          <Link href="/test" className="text-white">もう一度診断する</Link>
+          <Link href="/test" className="text-white">今すぐ性格診断</Link>
         </Button>
       </div>
     </header>
