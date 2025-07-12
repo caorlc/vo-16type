@@ -186,9 +186,17 @@ export default function ResultDetail({ typeData, mbtiType, premiumUnlocked, onUn
             <CardTitle>具体的なアドバイス</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="whitespace-pre-line leading-loose text-gray-700">
-              {typeData.specificSuggestions}
-            </div>
+            <PremiumMask
+              title="今すぐロックを解除"
+              desc="フルレポートを取得して、あなたの性格タイプに合った具体的なアドバイスを把握しましょう。"
+              buttonText="すべての結果のロックを解除"
+              onUnlockClick={onUnlockClick}
+              unlocked={premiumUnlocked}
+            >
+              <div className="whitespace-pre-line leading-loose text-gray-700">
+                {typeData.specificSuggestions}
+              </div>
+            </PremiumMask>
           </CardContent>
         </Card>
       )}

@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MicrosoftClarity from "@/components/MicrosoftClarity";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 
 export const metadata: Metadata = {
   title: '16タイプ性格診断 | 日本人のための16タイプ性格診断テスト',
@@ -83,6 +84,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <BackToTop />
       </body>
     </html>
   )

@@ -266,6 +266,27 @@ export default function PersonalityPage({ params }: { params: { type: string } }
               </ul>
             </section>
           )}
+
+          {/* 成功法则 successRules */}
+          {data.successRules && (
+            <section className="bg-white rounded-xl shadow-md p-6 mb-8">
+              <h2 className="text-xl font-semibold mb-6 text-gray-900">
+                {type.toUpperCase()} が達成するために生きるべき10のルール
+              </h2>
+              <ol className="list-decimal pl-6 space-y-2 text-gray-800">
+                {data.successRules.map((rule: string, idx: number) => (
+                  <li key={idx}>
+                    {rule.split(/\\n|\r\n|\r|\n/).map((line, i, arr) => (
+                      <span key={i}>
+                        {line}
+                        {i !== arr.length - 1 && <br />}
+                      </span>
+                    ))}
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
         </main>
       </div>
     </>

@@ -279,7 +279,7 @@ export default function ResultPage() {
                 <CardContent>
                   <PremiumMask
                     title="今すぐロックを解除"
-                    desc="フルレポートを取得して、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを把握しましょう。"
+                    desc="フルレポートを取得して、あなたの強みを最大限に活かす具体的な方法をチェックしましょう。"
                     buttonText="すべての結果のロックを解除"
                     onUnlockClick={handleUnlockClick}
                     unlocked={premiumUnlocked}
@@ -338,7 +338,7 @@ export default function ResultPage() {
                     <h3 className="font-semibold mb-2 text-lg">解決方法</h3>
                     <PremiumMask
                       title="今すぐロックを解除"
-                      desc="ここでは、あなたの性格タイプに合った課題の乗り越え方や成長のヒントを紹介しています。理論だけでなく、日常生活で即座に実践できる実用的なアドバイスを学べます。"
+                      desc="あなたのタイプが直面しやすい課題を乗り越える解決策をロック解除でチェックしよう。"
                       buttonText="すべての結果のロックを解除"
                       onUnlockClick={handleUnlockClick}
                       unlocked={premiumUnlocked}
@@ -375,9 +375,17 @@ export default function ResultPage() {
                   <CardTitle>具体的なアドバイス</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="whitespace-pre-line leading-loose text-gray-700">
-                    {typeData.specificSuggestions}
-                  </div>
+                  <PremiumMask
+                    title="今すぐロックを解除"
+                    desc="具体的アドバイスを今すぐチェック！日常で使えるヒントや行動プランを手に入れて、もっと自分らしく生きよう。"
+                    buttonText="すべての結果のロックを解除"
+                    onUnlockClick={handleUnlockClick}
+                    unlocked={premiumUnlocked}
+                  >
+                    <div className="whitespace-pre-line leading-loose text-gray-700">
+                      {typeData.specificSuggestions}
+                    </div>
+                  </PremiumMask>
                 </CardContent>
               </Card>
             </section>
