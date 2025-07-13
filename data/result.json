@@ -105,8 +105,8 @@
   },
   "enfp": {
     "basicInfo": {
-      "name": "冒険家",
-      "description": "情熱的で創造的な自由人",
+      "name": "運動家",
+      "description": "情熱的で創造的な運動家",
       "color": "bg-orange-500",
       "traits": ["創造性", "熱意", "適応性", "共感力"],
       "careers": ["カウンセラー", "教師", "作家", "アーティスト"],
