@@ -34,13 +34,11 @@ export async function generateMetadata({ params }: { params: { type: string } })
   }
 
   const title = `${type.toUpperCase()}（${data.name}）の性格タイプ | 16タイプ性格診断`;
-  const description = `${type.toUpperCase()}（${data.name}）の性格特徴、強み、弱み、適職、有名人を詳しく解説。${data.description}。16タイプ性格診断でENTP型の詳細分析をご覧ください。`;
-  const keywords = `${type.toUpperCase()}, ${data.name}, 16タイプ, 性格診断, MBTI, 性格タイプ, 討論者, 革新的, 議論好き, 柔軟性`;
+  const description = data.description;
 
   return {
     title,
     description,
-    keywords,
     openGraph: {
       title,
       description,
