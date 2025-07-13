@@ -38,7 +38,7 @@ export default function PremiumMask({ children, title, desc, buttonText, onUnloc
         {children}
       </div>
       {/* 遮罩弹窗 - absolute 定位，只覆盖内容区 */}
-      <div className="absolute inset-0 flex items-center justify-center z-10">
+      <div className="absolute inset-0 flex items-start pt-8 sm:items-center sm:pt-0 justify-center z-10">
         <div className="bg-white rounded-xl shadow-xl p-8 flex flex-col items-center max-w-md w-full border">
           <Lock className="w-10 h-10 text-orange-500 mb-2" />
           <div className="font-bold text-lg mb-2">{title || "今すぐロックを解除"}</div>
