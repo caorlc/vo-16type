@@ -140,7 +140,7 @@ export default function ResultPage() {
   }, [sessionId, searchParams])
 
   if (loading) {
-    return <div>加载中...</div>
+    return <div>Loading...</div>
   }
   if (!result || !result.mbtiType) {
     return <div>未找到类型</div>
