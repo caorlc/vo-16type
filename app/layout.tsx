@@ -8,12 +8,12 @@ import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
 
 export const metadata: Metadata = {
-  title: '16タイプ性格診断 | 日本人のための16タイプ性格診断テスト',
-  description: '世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。科学的根拠に基づいた16タイプ性格診断で、16の性格タイプからあなたにぴったりのタイプを特定します。',
+  title: '16タイプ診断 | 日本人向けの16タイプ診断',
+  description: '世界で最も信頼されている16タイプ診断で、あなたの隠れた才能と可能性を発見。科学的根拠に基づいた16タイプ診断で、16の性格タイプからあなたにぴったりのタイプを特定します。',
   keywords: '',
-  authors: [{ name: '16タイプ性格診断' }],
-  creator: '16タイプ性格診断',
-  publisher: '16タイプ性格診断',
+  authors: [{ name: '16タイプ診断' }],
+  creator: '16タイプ診断',
+  publisher: '16タイプ診断',
   formatDetection: {
     email: false,
     address: false,
@@ -24,10 +24,10 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: '16タイプ性格診断 | 日本人のための16タイプ性格診断テスト',
-    description: '世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を発見。科学的根拠に基づいた16タイプ性格診断で、16の性格タイプからあなたにぴったりのタイプを特定します。',
+    title: '16タイプ診断 | 日本人向けの16タイプ診断テスト',
+    description: '世界で最も信頼されている16タイプ診断で、あなたの隠れた才能と可能性を発見。科学的根拠に基づいた16タイプ診断で、16の性格タイプからあなたにぴったりのタイプを特定します。',
     url: 'https://www.my16type.com',
-    siteName: '16タイプ性格診断',
+    siteName: '16タイプ診断',
     locale: 'ja_JP',
     type: 'website',
     images: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: '16タイプ性格診断 - 日本人のための16タイプ性格診断テスト',
+        alt: '16タイプ診断 - 日本人向けの16タイプ診断',
       },
     ],
   },
@@ -77,6 +77,11 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="16タイプ診断" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8986403656669494"
+          crossOrigin="anonymous"
+        ></script>
       </head>
       <body>
         <GoogleAnalytics />

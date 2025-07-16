@@ -57,9 +57,9 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">16タイプ性格診断とは？</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">16タイプ診断とは？</h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              世界で最も信頼されている16タイプ性格診断で、あなたの隠れた才能と可能性を見つけてください。
+              世界で最も信頼されている16タイプ診断で、あなたの隠れた才能と可能性を見つけてください。
               <br />
             </p>
           </div>
@@ -74,7 +74,7 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <p className="text-gray-700 leading-relaxed">
-                16タイプ性格診断は、スイスの心理学者カール・グスタフ・ユングの心理学的類型論を基礎として、
+                16タイプ診断は、スイスの心理学者カール・グスタフ・ユングの心理学的類型論を基礎として、
                 キャサリン・クック・ブリッグスとその娘イザベル・ブリッグス・マイヤーズによって開発されました。
               </p>
               <p className="text-gray-700 leading-relaxed">
