@@ -12,6 +12,15 @@ const nextConfig = {
   experimental: {
     reactCompiler: false,
   },
+  async redirects() {
+    return [
+      {
+        source: '/types',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 export default nextConfig
