@@ -82,7 +82,10 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2025 16Type. All rights reserved.</p>
+          <p>
+            &copy; 2025 16Type. All rights reserved.
+            <span className="ml-4 block md:inline">ご質間やお問い合わせがごさいましたら、メールアドレスまでご連絡ください。<a href="mailto:support@my16type.com" className="underline hover:text-white ml-1">support@my16type.com</a></span>
+          </p>
         </div>
       </div>
     </footer>
